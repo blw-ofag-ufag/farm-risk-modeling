@@ -1,5 +1,3 @@
-# Experimental analysis of the controls of the agricultural sector targeting to simplify the system
+# Integrating farm structure data for data-driven farm inspection compliance analysis
 
-The files stored under https://aniterra.ch/fr/preparation-du-controle/ are used to make this analysis.
-
-The general idea is to extract a list of control points from the pdfs by using an AI model 
+This pipeline tests the automatic assembly of de-identified farm-year panel data by pulling raw data from AGIS (structural attributes, crops, animals, milk production), ACONTROL (on-farm inspections) and HODUFLU (manure and recycling-fertilizer flows).
