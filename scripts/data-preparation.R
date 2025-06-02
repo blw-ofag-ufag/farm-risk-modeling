@@ -41,7 +41,7 @@ assignIdentifier <- function(
   
   # look up secret if it's not passed to the function
   if(base::is.null(secret)) {
-    secret <- base::readLines("SECRET.env")[[1]]
+    secret <- base::readLines("resources/SECRET.env")[[1]]
     if (!base::nzchar(secret))
       stop("Provide a secret key via argument `secret` or environment variable SECRET.env", call. = FALSE)
   }
@@ -122,7 +122,7 @@ inspections$previous <- base::ceiling(inspections$PreviousPercentFail)
 # construct a farm using HMAC-BLAKE2B
 inspections$farm <- openssl::blake2b(
   x = base::as.character(inspections[["AGIS Nummer"]]),
-  key = base::readLines("SECRET.env")
+  key = base::readLines("resources/SECRET.env")
 )
 
 # keep only a subset of the data (remove some variables, remove older records)
