@@ -77,27 +77,27 @@ fields:
       enum: [ 'Pass', 'Fail' ]
   - name: previous
     type: string
-    description: "The binary outcome of the previous year's inspection, simplified from 'PreviousPercentFail'. Note: This variable has 24.9% missing values."
+    description: The binary outcome of the previous year's inspection, simplified from 'PreviousPercentFail'.
     constraints:
       enum: [ 'Pass', 'Fail' ]
   - name: farmType
     type: string
-    description: "The type of farm (originally 'Betriebsform neu').
+    description: The type of farm (originally 'Betriebsform neu').
     constraints:
       enum: [ 'Andere Betriebsform', 'Betrieb (=Ganzjahresbetrieb)', 'Betriebsgemeinschaft (zählt als 1 Betrieb)', 'Gemeinschaftsweidebetrieb', 'Sömmerungsbetrieb' ]
   - name: legalForm
     type: string
-    description: "The legal form of the farm entity.
+    description: The legal form of the farm entity.
     constraints:
       enum: [ 'Juristische Person', 'Natürliche Person' ]
   - name: canton
     type: string
-    description: "The Swiss canton where the farm is located.
+    description: The Swiss canton where the farm is located.
     constraints:
       enum: [ 'AG', 'AI', 'AR', 'BE', 'BL', 'BS', 'FR', 'GE', 'GL', 'GR', 'JU', 'LU', 'NE', 'NW', 'OW', 'SG', 'SH', 'SO', 'SZ', 'TG', 'TI', 'UR', 'VD', 'VS', 'ZG', 'ZH' ]
   - name: zone
     type: string
-    description: "The agricultural production zone of the farm (originally 'Zone neu').
+    description: The agricultural production zone of the farm (originally 'Zone neu').
     constraints:
       enum: [ 'Bergzone 1', 'Bergzone 2', 'Bergzone 3', 'Bergzone 4', 'Hügelzone', 'Talzone', 'Sömmerungsgebiet', 'Nicht zugeteilt / Andere' ]
   - name: LN
@@ -227,31 +227,31 @@ fields:
     unit: kg
   - name: trees
     type: number
-    description: Percentage of total agricultural area (LN) covered by trees ('Bäume'). Note: This variable has 14.5% missing values."
+    description: Percentage of total agricultural area (LN) covered by trees ('Bäume').
     unit: '%'
   - name: nonLNarea
     type: number
-    description: Percentage of area outside the official agricultural area ('Flächen ausserhalb der LN') relative to total LN. Note: This variable has 14.5% missing values."
+    description: Percentage of area outside the official agricultural area ('Flächen ausserhalb der LN') relative to total LN.
     unit: '%'
   - name: perennialCropsArea
     type: number
-    description: Percentage of total agricultural area (LN) with permanent crops ('Flächen mit Dauerkulturen'). Note: This variable has 14.5% missing values."
+    description: Percentage of total agricultural area (LN) with permanent crops ('Flächen mit Dauerkulturen').
     unit: '%'
   - name: protectedCropsArea
     type: number
-    description: Percentage of total agricultural area (LN) with crops under year-round protection. Note: This variable has 14.5% missing values."
+    description: Percentage of total agricultural area (LN) with crops under year-round protection.
     unit: '%'
   - name: grassArea
     type: number
-    description: Percentage of total agricultural area (LN) that is grassland ('Grünfläche'). Note: This variable has 14.5% missing values."
+    description: Percentage of total agricultural area (LN) that is grassland ('Grünfläche').
     unit: '%'
   - name: openArableArea
     type: number
-    description: Percentage of total agricultural area (LN) that is open arable land ('Offene Ackerfläche'). Note: This variable has 14.5% missing values."
+    description: Percentage of total agricultural area (LN) that is open arable land ('Offene Ackerfläche').
     unit: '%'
   - name: otherLNarea
     type: number
-    description: Percentage of other areas within the agricultural area ('Weitere Flächen innerhalb der LN') relative to total LN. Note: This variable has 14.5% missing values."
+    description: Percentage of other areas within the agricultural area ('Weitere Flächen innerhalb der LN') relative to total LN.
     unit: '%'
   - name: perennials
     type: number
@@ -271,7 +271,7 @@ fields:
     unit: '%'
   - name: nonAgArea
     type: number
-    description: Percentage of the farm's area that is non-agricultural ('Flächen ausserhalb der LN') relative to total LN. Contains Inf values. Note: This variable has 17.2% missing values."
+    description: Percentage of the farm's area that is non-agricultural ('Flächen ausserhalb der LN') relative to total LN. Contains Inf values.
     unit: '%'
   - name: potatos
     type: number
@@ -358,30 +358,44 @@ fields:
     description: Percentage of total livestock units (GVE) attributed to rabbits.
     unit: '%'
   - name: poultry
+    title:
+      de: Anteil Hühner an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to commercial poultry.
     unit: '%'
   - name: horses
+    title:
+      de: Anteil Pferde an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to horses.
     unit: '%'
   - name: cattle
+    title:
+      de: Anteil Rinder an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to cattle and water buffalo.
     unit: '%'
   - name: sheep
+    title:
+      de: Anteil Schafe an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to sheep.
     unit: '%'
   - name: pigs
+    title:
+      de: Anteil Schweine an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to pigs.
     unit: '%'
   - name: other_poultry
+    title:
+      de: Anteil andere Geflügel an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to other poultry.
     unit: '%'
   - name: goats
+    title:
+      de: Anteil Ziegen an GVE
     type: number
     description: Percentage of total livestock units (GVE) attributed to goats.
     unit: '%'
