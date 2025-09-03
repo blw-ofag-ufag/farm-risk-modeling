@@ -1,0 +1,387 @@
+# Frictionless Data Table Schema
+# This metadata describes a de-identified farm-year panel dataset combining Swiss agricultural
+# structural data (AGIS), on-farm inspection outcomes (ACONTROL), and nutrient flow data (HODUFLU).
+
+primaryKey:
+  - ID
+
+fields:
+  - name: ID
+    type: string
+    description: |
+      A unique, non-reversible farm-year identifier created by applying a keyed BLAKE2b hash (HMAC-BLAKE2b) to the original farm ID and the year.
+      This serves as the primary key to join all data sources.
+    constraints:
+      required: true
+      unique: true
+  - name: farm
+    type: string
+    title:
+      de: Betrieb
+      en: Farm
+    description: |
+      A pseudonymous identifier for the farm, created by applying a keyed BLAKE2b hash to the original 'AGIS Nummer'.
+      This allows tracking farms across years without revealing the original ID.
+    constraints:
+      required: true
+  - name: date
+    type: date
+    title:
+      de: Kontrolldatum
+      en: Inspection date
+    description: The date of the on-farm inspection (originally 'Kontrolldatum').
+    constraints:
+      required: true
+  - name: year
+    type: year
+    title:
+      de: Kontrolljahr
+      en: Inspection year
+    description: |
+      The year of the on-farm inspection, extracted from the 'date' field.
+      Earliest year is 2019, because the prior data is of very low quality.
+    constraints:
+      required: true
+  - name: type
+    type: string
+    title:
+      de: Kontrolltyp
+      en: Inspection type
+    description: |
+      The type of the inspection, i.e. whether it was a pre-announced inspection or an unannounced one.
+    constraints:
+      required: true
+      enum: [ 'Angemeldet', 'Nicht angemeldet' ]
+  - name: theme
+    title:
+      de: Kontrollbereich
+      en: Inspection theme
+    type: string
+    description: |
+      The specific theme or program covered by the inspection (originally 'v_theme').
+      These themes are manually constructed groups of inspection points.
+    constraints:
+      required: true
+      enum: [ 'Andere', 'BFF', 'BTS', 'GMF', 'Lebensmittelsicherheit', 'Nährstoff', 'PSM', 'RAUS', 'Tierschutz', 'Weide' ]
+  - name: result
+    title:
+      de: Kontrollresultat
+      en: Inspection result
+    type: string
+    description: |
+      The binary outcome of the inspection.
+      'Pass' indicates 0% fail rate with regards of all inspection points of a given theme, in a given year.
+      Example: If 23 points are checked within a year on a farm within theme 'BFF' and a single one showed a deficiency, this would be counted as 'Fail'.
+    constraints:
+      required: true
+      enum: [ 'Pass', 'Fail' ]
+  - name: previous
+    type: string
+    description: "The binary outcome of the previous year's inspection, simplified from 'PreviousPercentFail'. Note: This variable has 24.9% missing values."
+    constraints:
+      enum: [ 'Pass', 'Fail' ]
+  - name: farmType
+    type: string
+    description: "The type of farm (originally 'Betriebsform neu').
+    constraints:
+      enum: [ 'Andere Betriebsform', 'Betrieb (=Ganzjahresbetrieb)', 'Betriebsgemeinschaft (zählt als 1 Betrieb)', 'Gemeinschaftsweidebetrieb', 'Sömmerungsbetrieb' ]
+  - name: legalForm
+    type: string
+    description: "The legal form of the farm entity.
+    constraints:
+      enum: [ 'Juristische Person', 'Natürliche Person' ]
+  - name: canton
+    type: string
+    description: "The Swiss canton where the farm is located.
+    constraints:
+      enum: [ 'AG', 'AI', 'AR', 'BE', 'BL', 'BS', 'FR', 'GE', 'GL', 'GR', 'JU', 'LU', 'NE', 'NW', 'OW', 'SG', 'SH', 'SO', 'SZ', 'TG', 'TI', 'UR', 'VD', 'VS', 'ZG', 'ZH' ]
+  - name: zone
+    type: string
+    description: "The agricultural production zone of the farm (originally 'Zone neu').
+    constraints:
+      enum: [ 'Bergzone 1', 'Bergzone 2', 'Bergzone 3', 'Bergzone 4', 'Hügelzone', 'Talzone', 'Sömmerungsgebiet', 'Nicht zugeteilt / Andere' ]
+  - name: LN
+    title:
+      de: Landwirtschaftliche Nutzfläche
+      en: Farmland
+    type: number
+    description: |
+      The total farmland (Landwirtschaftliche Nutzfläche) of the farm.
+    unit: ha
+  - name: SAK
+    title:
+      de: Standardarbeitskraft
+    type: number
+    description: |
+      SAK, or Standardarbeitskraft, is a standardized unit used in Switzerland to measure and compare the size of farms.
+      The SAK number is calculated by taking the standardized working time required for a specific agricultural activity and dividing it by 2600 hours, which represents one standard labor unit.
+  - name: GVE
+    title:
+      de: Grossvieheinheiten
+      en: Total livestock units
+    type: number
+    description: A standardized measure of livestock numbers.
+  - name: DZ
+    title:
+      de: Erhält Direktzahlungen
+      en: Receives direct payments
+    type: string
+    description: Indicates if the farm receives direct payments for difficult cultivation conditions (originally 'Hat DZ'). 1 = Yes, 0 = No.
+    constraints:
+      enum: [ '0', '1' ]
+  - name: SB
+    type: string
+    constraints:
+      enum: [ '0', '1' ]
+  - name: proofMet
+    title:
+      de: ÖLN-Anforderungen erfüllt
+    type: string
+    description: |
+      Indicates if the ecological proof requirements are met.
+      1 = Yes, 0 = No.
+    constraints:
+      enum: [ '0', '1' ]
+  - name: organic
+    type: string
+    description: |
+      Indicates if the farm receives contributions for organic farming.
+      1 = Yes, 0 = No.
+    constraints:
+      enum: [ '0', '1' ]
+  - name: surveyStdMet
+    type: string
+    description: |
+      Indicates if the farm meets the data collection standard.
+      TODO: What exactly are these criteria?
+      1 = Yes, 0 = No.
+    constraints:
+      enum: [ '0', '1' ]
+  - name: farmerBirthYear
+    title:
+      de: Geburtsjahr des Betriebsleiters oder der Betriebsleiterin
+      en: Birth year of the farm manager
+    type: year
+    description: Birth year of the farm manager. This variable is only provided if the farm is a sole proprietorship.
+  - name: foundingYear
+    type: year
+    description: The year the farm was founded. This variable is only provided if the farm has a legal person.
+  - name: structures
+    type: boolean
+    description: |
+      Indicates if the farm has ecological compensation structures.
+      Combines 'Hat Strukturen' and 'Hat Strukturen im Sömmerungsgebiet'.
+  - name: hofDeliv
+    type: number
+    description: Total number of on-farm manure deliveries registered in HODUFLU.
+    unit: count
+  - name: hofNtot
+    type: number
+    description: Total nitrogen (N) balance from on-farm manure.
+    unit: kg
+  - name: hofNeff
+    type: number
+    description: Plant-available nitrogen (N) balance from on-farm manure.
+    unit: kg
+  - name: hofP205
+    type: number
+    description: Diphosphorus pentoxide (P₂O₅) balance from on-farm manure.
+    unit: kg
+  - name: hofK2O
+    type: number
+    description: Potassium oxide (K₂O) balance from on-farm manure.
+    unit: kg
+  - name: hofMg
+    type: number
+    description: Magnesium (Mg) balance from on-farm manure.
+    unit: kg
+  - name: recDeliv
+    type: number
+    description: Total number of recycling-fertilizer deliveries registered in HODUFLU.
+    unit: count
+  - name: recNtot
+    type: number
+    description: Total nitrogen (N) balance from recycling-fertilizer.
+    unit: kg
+  - name: recNeff
+    type: number
+    description: Plant-available nitrogen (N) balance from recycling-fertilizer.
+    unit: kg
+  - name: recP205
+    type: number
+    description: Diphosphorus pentoxide (P₂O₅) balance from recycling-fertilizer.
+    unit: kg
+  - name: recK2O
+    type: number
+    description: Potassium oxide (K₂O) balance from recycling-fertilizer.
+    unit: kg
+  - name: recMg
+    type: number
+    description: Magnesium (Mg) balance from recycling-fertilizer.
+    unit: kg
+  - name: milk
+    type: number
+    description: |
+      Total milk delivered from DBMILCH.
+      Missing values were imputed with 0.
+    unit: kg
+  - name: trees
+    type: number
+    description: Percentage of total agricultural area (LN) covered by trees ('Bäume'). Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: nonLNarea
+    type: number
+    description: Percentage of area outside the official agricultural area ('Flächen ausserhalb der LN') relative to total LN. Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: perennialCropsArea
+    type: number
+    description: Percentage of total agricultural area (LN) with permanent crops ('Flächen mit Dauerkulturen'). Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: protectedCropsArea
+    type: number
+    description: Percentage of total agricultural area (LN) with crops under year-round protection. Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: grassArea
+    type: number
+    description: Percentage of total agricultural area (LN) that is grassland ('Grünfläche'). Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: openArableArea
+    type: number
+    description: Percentage of total agricultural area (LN) that is open arable land ('Offene Ackerfläche'). Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: otherLNarea
+    type: number
+    description: Percentage of other areas within the agricultural area ('Weitere Flächen innerhalb der LN') relative to total LN. Note: This variable has 14.5% missing values."
+    unit: '%'
+  - name: perennials
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to permanent crops ('Dauerkulturen').
+    unit: '%'
+  - name: elements
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to other elements like stone walls, hedges, etc. ('Andere Elemente'). Contains Inf values.
+    unit: '%'
+  - name: breadCereals
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to bread cereals ('Brotgetreide').
+    unit: '%'
+  - name: perennialGrassland
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to permanent grassland ('Dauergrünflächen').
+    unit: '%'
+  - name: nonAgArea
+    type: number
+    description: Percentage of the farm's area that is non-agricultural ('Flächen ausserhalb der LN') relative to total LN. Contains Inf values. Note: This variable has 17.2% missing values."
+    unit: '%'
+  - name: potatos
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to potatoes ('Kartoffeln').
+    unit: '%'
+  - name: oilseeds
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to oilseeds ('Ölsaaten').
+    unit: '%'
+  - name: siloMaize
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to silo maize ('Silomais').
+    unit: '%'
+  - name: otherAgArea
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to other agricultural uses ('Weitere Flächen innerhalb der LN').
+    unit: '%'
+  - name: BFFelements
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to biodiversity promotion areas ('BFF Elemente').
+    unit: '%'
+  - name: fodderCereals
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to fodder cereals ('Futtergetreide').
+    unit: '%'
+  - name: legumes
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to grain legumes ('Körnerleguminosen').
+    unit: '%'
+  - name: grainMaize
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to grain maize ('Körnermais').
+    unit: '%'
+  - name: artificialGrassland
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to artificial grasslands ('Kunstwiesen').
+    unit: '%'
+  - name: sugarBeets
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to sugar beets ('Zuckerrüben').
+    unit: '%'
+  - name: protectedCrops
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to crops in year-round protected cultivation.
+    unit: '%'
+  - name: specialCrops
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to special crops ('Spezialkulturen').
+    unit: '%'
+  - name: seedMaterials
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to seed and planting material ('Saat- und Pflanzgut').
+    unit: '%'
+  - name: otherArea
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to other open arable land ('Übrige offene Ackerfläche').
+    unit: '%'
+  - name: renewals
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to renewable resources ('Nachwachsende Rohstoffe').
+    unit: '%'
+  - name: fodderBeets
+    type: number
+    description: Percentage of the farm's agricultural area (LN) dedicated to fodder beets ('Futterrüben').
+    unit: '%'
+  - name: alps
+    type: number
+    description: Percentage of the farm's area in summering pastures ('Flächen im Sömmerungsgebiet') relative to total LN. 
+    unit: '%'
+  - name: roughage
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to other roughage-consuming animals.
+    unit: '%'
+  - name: other_animals
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to other animals.
+    unit: '%'
+  - name: hobby_pets
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to hobby/pet animals.
+    unit: '%'
+  - name: rabbits
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to rabbits.
+    unit: '%'
+  - name: poultry
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to commercial poultry.
+    unit: '%'
+  - name: horses
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to horses.
+    unit: '%'
+  - name: cattle
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to cattle and water buffalo.
+    unit: '%'
+  - name: sheep
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to sheep.
+    unit: '%'
+  - name: pigs
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to pigs.
+    unit: '%'
+  - name: other_poultry
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to other poultry.
+    unit: '%'
+  - name: goats
+    type: number
+    description: Percentage of total livestock units (GVE) attributed to goats.
+    unit: '%'
