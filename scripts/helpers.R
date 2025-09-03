@@ -90,7 +90,7 @@ get_title <- function(variable, metadata, lang = "en", unit = FALSE) {
     warning(sprintf("`%s` found multiple times in the metadata\n", variable))
   }
   title <- metadata$fields[[i]]$title[[lang]]
-  if(unit) {
+  if (unit) {
     unit <- metadata$fields[[i]]$unit
     if (is.null(unit)) break
     title <- sprintf("%s [%s]", title, unit)
