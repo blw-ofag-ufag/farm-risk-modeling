@@ -73,19 +73,6 @@ data_split <- function(data, theme, predictors, training_size = 0.8) {
 
 
 #' =============================================================================
-#' GET A VARIABLE'S TITLE FROM FRICTIONLESS METADATA
-#' -----------------------------------------------------------------------------
-#'
-#' @param variable        The 'name' of the field you want the title for.
-#' @param metadata        An R list object read from a Frictionless YAML file.
-#' @param lang            The desired language for the title (e.g., "en", "de").
-#' @param unit            Should the unit be concatenated to the returned title?
-#'
-#' @return The constructed title string in a given language, or NULL if con-
-#'         structing the title string failed.
-#' =============================================================================
-
-#' =============================================================================
 #' GET VARIABLE TITLES FROM FRICTIONLESS METADATA (VECTORIZED)
 #' -----------------------------------------------------------------------------
 #'
