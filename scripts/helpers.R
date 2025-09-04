@@ -1,6 +1,6 @@
 #' =============================================================================
 #'       title:  HELPER FUNCTIONS FOR THE FARM RISK MODELING TASK
-#'      author:  Damian Oswald (damian.oswald@blw.admin.ch)
+#'      author:  Damian Oswald
 #'        date:  2025-06-02
 #' description:  This script contains various helper functions used by other
 #'               scripts.
@@ -39,30 +39,30 @@ drop_unique_factors <- function(data) {
 
 data_split <- function(data, theme, predictors, training_size = 0.8) {
 
-  # subset the data by theme, and select "farm", predictors, and any groups
+  #' Subset the data by theme, and select "farm", predictors, and any groups
   df <- data[
     i    = data[["theme"]] == theme,
     j    = base::unique(c("farm", predictors)),
     drop = FALSE
   ] %>%
 
-    # Drop any rows with missing data
+    #' Drop any rows with missing data
     stats::na.omit() %>%
 
-    # Drop any columns that have fewer than 2 unique values
-    # (farm will usually have >1, so it stays).
+    #' Drop any columns that have fewer than 2 unique values
+    #' (farm will usually have >1, so it stays).
     drop_unique_factors()
 
-  # select only unique farms (one farm belongs to test or train, not both)
+  #' Select only unique farms (one farm belongs to test or train, not both)
   x <- base::unique(df$farm)
 
-  # sample some train farms
+  #' Sample some train farms
   train_farms <- base::sample(x, training_size * base::length(x))
 
-  # save indices of train farms in the `df` data frame
+  #' Save indices of train farms in the `df` data frame
   i <- df[["farm"]] %in% x[x %in% train_farms]
 
-  # return two data sets, one train, one test, one original and indices
+  #' Return two data sets, one train, one test, one original and indices
   list(
     train = df[i,  , drop = FALSE],
     test  = df[!i, , drop = FALSE],
