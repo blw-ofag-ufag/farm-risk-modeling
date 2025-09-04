@@ -85,19 +85,65 @@ data_split <- function(data, theme, predictors, training_size = 0.8) {
 #'         structing the title string failed.
 #' =============================================================================
 
-get_title <- function(variable, metadata, lang = "en", unit = FALSE) {
-  i <- which(lapply(metadata$fields, getElement, "name") == variable)
-  if (length(i) == 0) {
-    warning(sprintf("`%s` not found in the metadata\n", variable))
-  }
-  if (length(i) > 1) {
-    warning(sprintf("`%s` found multiple times in the metadata\n", variable))
-  }
-  title <- metadata$fields[[i]]$title[[lang]]
-  if (unit) {
-    unit <- metadata$fields[[i]]$unit
-    if (is.null(unit)) break
-    title <- sprintf("%s [%s]", title, unit)
-  }
-  title
+#' =============================================================================
+#' GET VARIABLE TITLES FROM FRICTIONLESS METADATA (VECTORIZED)
+#' -----------------------------------------------------------------------------
+#'
+#' @param x             A character vector of field 'names' to get titles for.
+#' @param metadata      An R list object read from a Frictionless YAML file.
+#' @param lang          The desired language for the title (e.g., "en", "de").
+#' @param unit          Should the unit be concatenated to the returned title?
+#'
+#' @return A character vector of constructed title strings. If a title cannot
+#'         be constructed for given variable(s), the variable name itself is
+#'         returned as a fallback.
+#' =============================================================================
+
+get_titles <- function(x, metadata, lang = "en", unit = TRUE) {
+
+  #' For efficiency, create a named list for quick lookups. The names of the
+  #' list are the variable names, and the values are the field objects.
+  lookup <- setNames(
+    metadata$fields,
+    sapply(metadata$fields, `[[`, "name")
+  )
+
+  #' Iterate over each variable name provided.
+  titles <- lapply(x, function(key) {
+
+    #' Attempt to retrieve the entire field object for the current variable 'v'.
+    field <- lookup[[key]]
+
+    #' Fallback Condition 1: Variable not found
+    #' (If the field doesn't exist in lookup, return the variable name itself.)
+    if (is.null(field)) {
+      return(key)
+    }
+
+    #' Attempt to retrieve the title for the specified language.
+    title <- field$title[[lang]]
+
+    #' Fallback Condition 2: Title in specified language not found
+    #' If the title is NULL (e.g., lang 'fr' doesn't exist), return the key.
+    if (is.null(title)) {
+      return(key)
+    }
+
+    #' If the 'unit' flag is TRUE, append the unit if one exists.
+    if (unit && !is.null(field$unit)) {
+      title <- sprintf("%s [%s]", title, field$unit)
+    }
+
+    #' Return the successfully constructed title.
+    title
+  })
+
+  #' convert the list back into a simple character vector.
+  titles <- unlist(titles)
+
+  #' name the vector using the provided keys
+  names(titles) <- x
+
+  #' Return the constructed titles
+  titles
 }
