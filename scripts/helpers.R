@@ -134,3 +134,32 @@ get_titles <- function(x, metadata, lang = "en", unit = TRUE) {
   #' Return the constructed titles
   titles
 }
+
+
+#' =============================================================================
+#' LABEL AND TRANSLATE A DATASET USING THE FRICTIONLESS METADATA
+#' -----------------------------------------------------------------------------
+#'
+#' @param data          The data set to be labelled/translated
+#' @param metadata      An R list object read from a Frictionless YAML file.
+#' @param lang          The desired language for the title (e.g., "en", "de").
+#' @param unit          Should the unit be concatenated to the returned title?
+#'
+#' @return A dataset with replaced column names and TODO: replaced level names
+#' =============================================================================
+
+label_dataset <- function(data, metadata, lang = "de", unit = TRUE) {
+
+  #' Replace column names
+  colnames(data) <- get_titles(
+    x = colnames(data),
+    metadata = metadata,
+    lang = "de",
+    unit = unit
+  )
+
+  #' TODO: Also replace level names (requires labelled levels in metadata)
+
+  #' Return labelled/translated data set
+  data
+}

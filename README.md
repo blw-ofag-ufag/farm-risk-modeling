@@ -11,8 +11,8 @@ Hence, the processing script can only be executed by FOAG collaborators with acc
 In addition, a secret environment key needs to be stored under `resources/SECRET.env`.
 It is used in the data preparation script to securely hash the farm level identifiers.
 
-If you have access to these resources, you may run the processing script as
+If you have access to these resources, you may run the entire pipeline as
 
 ```r
-Rscript scripts/data-preparation.R
+sh scripts/pipeline.sh
 ```

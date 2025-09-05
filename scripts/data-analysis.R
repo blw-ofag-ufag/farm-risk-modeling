@@ -30,7 +30,7 @@ colnames(df) <- get_titles(colnames(data), meta, "de")
 #' =============================================================================
 
 #' Write results into some text file
-sink("results/data-analysis.txt")
+sink("results/overall/data-analysis.txt")
 
 #' Create a summary of the data using summarytools
 summarytools::dfSummary(
