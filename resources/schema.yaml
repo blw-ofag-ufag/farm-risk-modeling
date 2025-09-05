@@ -412,7 +412,7 @@ fields:
     unit: '%'
   - name: otherAgArea
     title:
-      de: Anteil weiterer Flächen innerhalb der LN
+      de: Anteil weiterer landwirtschaftlicher Flächen
       en: Share of the farmland dedicated to other agricultural uses
     type: number
     description: Percentage of the farm's agricultural area (LN) dedicated to other agricultural uses ('Weitere Flächen innerhalb der LN').
