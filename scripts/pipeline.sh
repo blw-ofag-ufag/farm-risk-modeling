@@ -8,6 +8,3 @@ Rscript scripts/data-analysis.R
 for theme in BFF BTS GMF Lebensmittelsicherheit Nährstoff PSM RAUS Tierschutz Weide Andere; do
   Rscript scripts/random-forests.R ${theme}
 done
-
-# Test for a single one
-Rscript scripts/random-forests.R BFF
