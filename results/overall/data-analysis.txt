@@ -310,8 +310,8 @@ Anteil Silomais [%]                        Mean (sd) : 3.8 (6.6)            5071
                                            IQR (CV) : 6.1 (1.7)                                      :                               
                                                                                                      : .                             
 
-Anteil weiterer Flächen innerhalb der      Mean (sd) : 1.5 (3.6)            53439 distinct values    :                      103694   
-LN [%]                                     min < med < max:                                          :                      (17.5%)  
+Anteil weiterer landwirtschaftlicher       Mean (sd) : 1.5 (3.6)            53439 distinct values    :                      103694   
+Flächen [%]                                min < med < max:                                          :                      (17.5%)  
 [numeric]                                  0 < 0.3 < 100                                             :                               
                                            IQR (CV) : 1.5 (2.4)                                      :                               
                                                                                                      :                               

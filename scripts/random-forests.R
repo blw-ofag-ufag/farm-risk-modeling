@@ -133,7 +133,7 @@ sample_sizes <- c(Pass = n_fail, Fail = n_fail)
 model <- randomForest(
   formula = formula,
   data = data$train,
-  ntree = 5,
+  ntree = 500,
   sampsize = sample_sizes,
   importance = TRUE
 )
