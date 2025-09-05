@@ -157,6 +157,10 @@ confusion_matrix <- confusionMatrix(
   positive = "Fail"
 )
 
+#' Save confusion matrix with test scores
+saveRDS(confusion_matrix, file.path("results", theme, "confusion-matrix.rds"))
+
+#' Print results to text summary
 print(formula)
 print(model)
 print(confusion_matrix)
@@ -192,6 +196,62 @@ print(knitr::kable(sorted_importance_scores, digits = 3))
 
 #' Close file with results again
 sink()
+
+#' =============================================================================
+#' PLOT THE CONFUSION MATRIX
+#' -----------------------------------------------------------------------------
+#' Create a visual representation of the model's performance on the test set
+#' using the previously generated confusion matrix.
+#' =============================================================================
+
+#' Prepare the confusion matrix data for ggplot
+confusion_matrix_df <- as.data.frame(confusion_matrix$table) %>%
+  mutate(
+    Percentage = Freq / sum(Freq) * 100,
+    Label = paste0(Freq, "\n(", round(Percentage, 1), "%)")
+  )
+
+#' Create the plot
+plot_cm <- ggplot(
+  confusion_matrix_df,
+  aes(x = Prediction, y = Reference, fill = Freq)
+) +
+  geom_tile(color = "white", lwd = 1.5) +
+  geom_text(
+    aes(label = Label),
+    color = ifelse(confusion_matrix_df$Percentage > 40, "white", "black"),
+    size = 5
+  ) +
+  scale_fill_gradient(low = "#EBF5F4", high = "#2A9D8F") +
+  scale_y_discrete(limits = rev) +
+  coord_fixed() +
+  labs(
+    title = paste("Fehlermatrix für den Themenbereich", theme),
+    subtitle = "Modellperformance berechnet auf dem ungesehenen Test-Datensatz",
+    x = "Vorhergesagte Klasse",
+    y = "Tatsächliche Klasse"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = rel(1.3)),
+    plot.subtitle = element_text(margin = ggplot2::margin(b = 15)),
+    legend.position = "none",
+    panel.grid = element_blank(),
+    axis.title = element_text(face = "bold"),
+    axis.text = element_text(size = rel(1)),
+    plot.margin = ggplot2::margin(20, 20, 20, 20)
+  )
+
+#' Save the confusion matrix plot
+ggsave(
+  file.path("results", theme, "confusion_matrix.png"),
+  plot = plot_cm,
+  width = 9,
+  height = 8,
+  units = "in",
+  dpi = 300
+)
 
 #' =============================================================================
 #' PLOT THE IMPORANCE SCORES

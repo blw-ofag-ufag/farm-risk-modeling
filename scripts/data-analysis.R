@@ -24,6 +24,8 @@ meta <- yaml::read_yaml("resources/schema.yaml")
 #' Translate labels in `df` just for fully automatic processing
 colnames(df) <- get_titles(colnames(data), meta, "de")
 
+#' create folder for overall results, if it doesn't already exist
+if (!dir.exists("results/overall")) dir.create("results/overall")
 
 #' =============================================================================
 #' DATA ANALYIS
