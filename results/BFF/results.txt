@@ -476,6 +476,12 @@ Prediction Pass Fail
                                           
 
 
+ROC-AUC and Precision-Recall AUC:
+===================================
+ROC-AUC:  0.735 
+PR-AUC:  0.186 
+
+
 |                                                               |   Pass|   Fail| MeanDecreaseAccuracy| MeanDecreaseGini|
 |:--------------------------------------------------------------|------:|------:|--------------------:|----------------:|
 |Kanton                                                         | 21.429| 36.996|               24.083|          137.115|

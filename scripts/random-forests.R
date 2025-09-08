@@ -32,6 +32,8 @@ library(ggtext)
 library(iml) # interpretable machine learning
 library(knitr)
 library(magrittr)
+library(pROC) # for ROC curve analysis
+library(PRROC) # for Precision-Recall curve analysis
 library(randomForest)
 library(randomForestExplainer)
 library(showtext)
@@ -148,6 +150,9 @@ model <- randomForest(
 #' Generate predictions on the test set
 predictions <- predict(model, newdata = data$test)
 
+# Generate class probabilities needed for ROC and PR curves
+predictions_prob <- predict(model, newdata = data$test, type = "prob")
+
 #' Generate the confusion matrix and a comprehensive set of statistics. We set
 #' `positive = "Fail"` to get metrics like sensitivity and specificity from the
 #' perspective of correctly identifying failed inspections.
@@ -164,6 +169,37 @@ saveRDS(confusion_matrix, file.path("results", theme, "confusion-matrix.rds"))
 print(formula)
 print(model)
 print(confusion_matrix)
+
+
+#' =============================================================================
+#' ROC-AUC AND PRECISION-RECALL ANALYSIS
+#' -----------------------------------------------------------------------------
+#' We calculate and save the ROC and Precision-Recall curve data.
+#' =============================================================================
+
+#' Calculate ROC curve and AUC
+roc_obj <- roc(data$test$result, predictions_prob[, "Fail"])
+auc_value <- auc(roc_obj)
+
+#' Save ROC object
+saveRDS(roc_obj, file.path("results", theme, "roc_object.rds"))
+
+#' Calculate Precision-Recall curve and AUC
+pr_obj <- pr.curve(
+  scores.class0 = predictions_prob[, "Fail"], 
+  weights.class0 = as.numeric(data$test$result == "Fail"),
+  curve = TRUE
+)
+pr_auc_value <- pr_obj$auc.integral
+
+#' Save PR object
+saveRDS(pr_obj, file.path("results", theme, "pr_object.rds"))
+
+#' Print AUC values to the summary file
+cat("\n\nROC-AUC and Precision-Recall AUC:\n")
+cat("===================================\n")
+cat("ROC-AUC: ", round(auc_value, 3), "\n")
+cat("PR-AUC: ", round(pr_auc_value, 3), "\n")
 
 #' =============================================================================
 #' POST-HOC MODEL ANALYSIS
@@ -222,7 +258,7 @@ plot_cm <- ggplot(
     color = ifelse(confusion_matrix_df$Percentage > 40, "white", "black"),
     size = 5
   ) +
-  scale_fill_gradient(low = "#EBF5F4", high = "#2A9D8F") +
+  scale_fill_gradient(low = "#EBF5F4", high = "#3366CC") +
   scale_y_discrete(limits = rev) +
   coord_fixed() +
   labs(
@@ -299,7 +335,7 @@ horizontal_plot <- ggplot(
   geom_col(position = position_dodge(width = 0.8), width = 0.7, alpha = 0.9) +
   scale_fill_manual(values = c(
     "Mängel" = "#E76F51",
-    "Konform" = "#2A9D8F"
+    "Konform" = "#3366CC"
   )) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
   labs(
@@ -310,7 +346,7 @@ horizontal_plot <- ggplot(
     subtitle = paste0(
       "Relative Wichtigkeit für die Vorhersage von **",
       "<span style='color:#E76F51;'>Mängel</span>** vs. **",
-      "<span style='color:#2A9D8F;'>Konform</span>** (Top 15 Variablen).",
+      "<span style='color:#3366CC;'>Konform</span>** (Top 15 Variablen).",
       "Die dargestellte Wichtigkeit (Mean Decrease in Accuracy) misst,<br>",
       "wie stark die Vorhersagegenauigkeit des Modells sinkt,",
       "wenn der Einfluss einer einzelnen Variable durch",
@@ -347,6 +383,95 @@ ggsave(
   plot = horizontal_plot,
   width = 16,
   height = 9,
+  units = "in",
+  dpi = 300
+)
+
+
+#' =============================================================================
+#' PLOT THE ROC CURVE
+#' -----------------------------------------------------------------------------
+#' Create a visual representation of the model's ability to distinguish between
+#' the positive and negative classes.
+#' =============================================================================
+
+plot_roc <- ggroc(roc_obj, colour = "#3366CC", size = 1.2) +
+  geom_segment(
+    aes(x = 1, xend = 0, y = 0, yend = 1),
+    color = "grey",
+    linetype = "dashed"
+  ) +
+  coord_fixed() +
+  labs(
+    title = paste("ROC-Kurve für den Themenbereich", theme),
+    subtitle = paste0(
+      "Modellperformance auf dem Test-Datensatz. AUC = ",
+      round(auc_value, 3)
+    ),
+    x = "Falsch-Positiv-Rate (1 - Spezifität)",
+    y = "Richtig-Positiv-Rate (Sensitivität)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = rel(1.3)),
+    plot.subtitle = element_text(margin = ggplot2::margin(b = 15)),
+    legend.position = "none",
+    panel.grid = element_line(linetype = "dotted"),
+    axis.title = element_text(face = "bold"),
+    plot.margin = ggplot2::margin(20, 20, 20, 20)
+  )
+
+#' Save the ROC curve plot
+ggsave(
+  file.path("results", theme, "roc_curve.png"),
+  plot = plot_roc,
+  width = 9,
+  height = 8,
+  units = "in",
+  dpi = 300
+)
+
+#' =============================================================================
+#' PLOT THE PRECISION-RECALL CURVE
+#' -----------------------------------------------------------------------------
+#' Create a visual representation of the model's performance, which is often
+#' more informative than ROC curves for imbalanced datasets.
+#' =============================================================================
+
+pr_df <- data.frame(
+  Recall = pr_obj$curve[, 1],
+  Precision = pr_obj$curve[, 2]
+)
+
+plot_pr <- ggplot(pr_df, aes(x = Recall, y = Precision)) +
+  geom_line(color = "#3366CC", size = 1.2) +
+  labs(
+    title = paste("Precision-Recall-Kurve für den Themenbereich", theme),
+    subtitle = paste0(
+      "Modellperformance auf dem Test-Datensatz. AUC = ",
+      round(pr_auc_value, 3)
+    ),
+    x = "Recall (Sensitivität)",
+    y = "Precision (Positiver Vorhersagewert)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = rel(1.3)),
+    plot.subtitle = element_text(margin = ggplot2::margin(b = 15)),
+    legend.position = "none",
+    panel.grid = element_line(linetype = "dotted"),
+    axis.title = element_text(face = "bold"),
+    plot.margin = ggplot2::margin(20, 20, 20, 20)
+  )
+
+#' Save the Precision-Recall curve plot
+ggsave(
+  file.path("results", theme, "pr_curve.png"),
+  plot = plot_pr,
+  width = 9,
+  height = 8,
   units = "in",
   dpi = 300
 )

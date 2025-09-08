@@ -464,6 +464,12 @@ Prediction Pass Fail
                                          
 
 
+ROC-AUC and Precision-Recall AUC:
+===================================
+ROC-AUC:  0.714 
+PR-AUC:  0.293 
+
+
 |                                                            |   Pass|   Fail| MeanDecreaseAccuracy| MeanDecreaseGini|
 |:-----------------------------------------------------------|------:|------:|--------------------:|----------------:|
 |Anteil Ziegen                                               |  4.370|  0.055|                4.329|            0.262|
