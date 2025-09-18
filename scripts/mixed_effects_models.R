@@ -94,6 +94,9 @@ dat1$train[dat1$train$farm %in% dat1$test$farm, ]
 # Collinearity occurs when two or more predictor variables are highly correlated,
 # which impairs the precision in estimating each variable's contribution to the model’s predicted outcome.
 # To accurately assess the influence of individual farm attributes, we need to evaluate collinearity.
+# If prediction is the main goal, mild multicollinearity may not be a problem (LASSO can help shrink
+# redundant variables). If interpretation of coefficients is the goal, check for collinearity and
+# potentially remove or combine variables.
 # =========================================================================================================
 
 
@@ -147,7 +150,6 @@ scale_with_train <- function(df, stats) {
 train_scaled <- scale_with_train(dat1$train, train_stats)
 test_scaled  <- scale_with_train(dat1$test, train_stats)
 
-
 # For LASSO regression, create a matrix of predictor variables (x),
 # this must be a numeric matrix to fit the cv.glmnet() function.
 # Remove the response variable (here "result").
@@ -182,7 +184,7 @@ plot(model1)
 optimal_model <- glmnet(x, y, alpha = 1, lambda = opt_lambda)
 coef(optimal_model)
 
-# Visualize Lasso model coefficients
+# Visualize LASSO model coefficients
 # Create a dataframe from the coefficients of the model.
 # Remove the intercept, its coefficient isn't penalized by Lasso reggression
 # and can be large because most inspection results are "Pass".
@@ -212,7 +214,7 @@ ggplot(coef_dat_nz, aes(x = reorder(Predictor, Coefficient), y = Coefficient)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Map dummy variable names back to original variable names
+# Map dummy variable names back to original variable names to insert them more conveniently into the models.
 matched_vars <- sapply(coef_dat_nz$Predictor, function(x) {
   predictors[startsWith(x, predictors)]
 })
@@ -226,11 +228,13 @@ matched_vars
 # =========================================================================================================
 # Generalized linear mixed-effects model (GLMM)
 # ---------------------------------------------------------------------------------------------------------
-# Use the test data (test_dat) in a generalized linear mixed-effects model, with the variables selected
-# using LASSO regression. Since variables were selected using the training data (train_dat), we prevent
-# overfitting the model to the data. This way we can test the actual contribution of selected variables
-# to the inspection result.
-#
+# Generalized linear mixed-effects model allow for random effects. In our case we know that "canton"
+# is an important variable from LASSO regression, but we might want to investigate the contribution of
+# other variables to the inspection outcome. To this end, we can use a GLMM with "canton" as a random
+# effect.
+# Use the test data (test_dat) with the variables selected in LASSO regression. Since variables were
+# selected using the training data (train_dat), we prevent overfitting the model to the data. This way
+# we can test the actual contribution of selected variables to the inspection result.
 # =========================================================================================================
 
 # Check whether both outcomes of the "result"-variable are well represented
@@ -239,7 +243,7 @@ sum(test_scaled$result == 'Fail')
 
 # Run the model with selected variables
 # Use a GLMM if you want to include random effects
-glmm1 <- lme4::glmer(result ~ type + previous + SAK + GVE + DZ + proofMet + organic + milk + trees +
+glmm1 <- lme4::glmer(result ~ type + previous + GVE + proofMet + organic + milk + trees +
                      oilseeds + artificialGrassland + cattle + sheep
                      + (1 | canton), # canton as random effect
                      data = test_scaled, # use scaled test data
@@ -247,25 +251,25 @@ glmm1 <- lme4::glmer(result ~ type + previous + SAK + GVE + DZ + proofMet + orga
                      na.action = na.fail
                      )
 
+# Summarise the model and identify significant variables
 summary(glmm1)
-ranef(glmm1) # random effects
-AIC(glmm1, glm1) #compare AIC of the GLMM and the GLM
-BIC(glmm1, glm1) #compare AIC of the GLMM and the GLM
+ranef(glmm1) # coefficients of random effects
 pred_probs <- predict(glmm1, type = "response")
 emmeans(glmm1, ~ type)
 
-# Compute AUC
+# Compute AUC of the ROC curve to assess model prediction quality
+# (0.5 = not better than random, > 0.75 pretty good)
 glmm_pred <- predict(glmm1, type = "response")
 roc_obj_glmm <- roc(test_scaled$result, glmm_pred)
 auc(roc_obj_glmm)
 
-# Marginal and Conditional R² of mixed effect models
+# Compute marginal and Conditional R² of mixed effect models
 # Theoretical and delta are two approaches to estimating R-squared in GLMMs;
 # delta method is usually more robust for GLMMs with non-Gaussian error structures.
 r.squaredGLMM(glmm1)
 
 # Check whether the model can be simplified by dropping one of the fixed effects
-# GVE, DZ, milk, trees, artificialGrassland, cattle, sheep
+# GVE, milk, trees, artificialGrassland, cattle, sheep
 drop1(glmm1, test = "Chisq")
 
 # Create a model with the minimum amount of variables
@@ -277,19 +281,22 @@ glmm2 <- lme4::glmer(result ~ type + previous + SAK + proofMet + organic +
                      na.action = na.fail
 )
 
+# Summarise the model and identify significant variables
 summary(glmm2)
 
-# Compute AUC
+# Compute AUC of the ROC curve to assess model prediction quality
+# (0.5 = not better than random, > 0.75 pretty good)
 glmm_pred <- predict(glmm2, type = "response")
 roc_obj_glmm <- roc(test_scaled$result, glmm_pred)
 auc(roc_obj_glmm)
 
+# Compute marginal and Conditional R² of mixed effect models
 r.squaredGLMM(glmm2)
 
 # =========================================================================================================
 # Generalized linear model (GLM)
 # ---------------------------------------------------------------------------------------------------------
-#
+# If no random effects are required for the final model structure, use a GLM instead of a GLMM.
 # =========================================================================================================
 
 # Use a Generalized Linear Model (GLM) if you don't want to include random effects
@@ -299,7 +306,11 @@ glm1 <- glm(result ~ type + previous + canton + SAK + GVE + DZ + proofMet + orga
                           family = binomial, # for binary response variables
                           na.action = na.fail
                           )
-# Explained variation
+
+# Summarise the model and identify significant variables
+summary(glm1)
+
+# Explaiglm1# Explained variation
 pscl::pR2(glm1) # McFaddens pseudo-R²
 performance::r2_tjur(glm1) # McFaddens pseudo-R²
 
@@ -317,7 +328,7 @@ auc_val <- auc(roc_obj)
 print(auc_val)
 plot(roc_obj, col = "blue", main = "ROC Curve for GLM")
 
-# Check minimal GLM
+# Check minimal GLM, removing the variables dropped with the chi-square test on the GLMM
 glm2 <- glm(result ~ type + previous + canton + GVE + DZ + proofMet + organic + trees +
               oilseeds + artificialGrassland + sheep,
             data = test_scaled, # use scaled test data
@@ -325,139 +336,58 @@ glm2 <- glm(result ~ type + previous + canton + GVE + DZ + proofMet + organic + 
             na.action = na.fail
 )
 
+# Summarise the model and identify significant variables
 summary(glm2)
-exp(coef(glm2))
 
 # Explained variation
 pscl::pR2(glm2) # McFaddens pseudo-R²
 performance::r2_tjur(glm2) # McFaddens pseudo-R²
 
-# Compute AUC
+# ROC and AUC
 # Predicted probabilities
 glm_pred <- predict(glm2, type = "response")
 
 # True outcome (must be 0/1 or two-level factor)
 y <- test_scaled$result
 
-# ROC and AUC
 roc_obj <- roc(y, glm_pred)
 auc_val <- auc(roc_obj)
 
 print(auc_val)
+
+# Plot the ROC curve
 plot(roc_obj, col = "blue", main = "ROC Curve for GLM")
 
 
+# =========================================================================================================
+# Plots
+# ---------------------------------------------------------------------------------------------------------
+# Compute and plot estimated marinal means (EMMs) of probabilities for a variable of your choice.
+# The models have the response variable "result", which has the two levels "Pass" and "Fail".
+# Therefore, the EMM represents the probability of failing an inspection if the farm has a certain attribute.
+# For example, the variable "type" has two levels "Angemeldet" and "Nicht angemeldet" and the probability
+# tells you the chance of failing an inspection if it was either "Angemeldet", or "Nicht angemeldet".
+# =========================================================================================================
 
+# Compute EMMs of probabilities
+data_emms <- as.data.frame(emmeans(glmm2, ~ type, type = "response"))
 
-
-
-### ========================== data formatting ========================== ###
-#factorize variables
-data <- pr_extended %>%
-
-  as_tibble() %>%
-
-  dplyr::mutate(individual = factor(individual),
-                family = factor(family),
-                reciprocal_family = factor(reciprocal_family),
-                taxon = factor(taxon),
-                origin = factor(origin),
-                ploidy = factor(ploidy),
-                rte_location = factor(rte_location),
-                rte_elevation.m. = factor(rte_elevation.m.),
-                phenotyping_run = factor(phenotyping_run),
-                type = factor(type),
-                type_date = case_when(year == "2020" & type == "early season" ~ "early season 2020",
-                                      year == "2020" & type == "full bloom" ~ "full bloom 2020",
-                                      year == "2020" & type == "end season" ~ "end season 2020",
-                                      year == "2021" & type == "early season" ~ "early season 2021",
-                                      year == "2021" & type == "full bloom" ~ "full bloom 2021",
-                                      year == "2021" & type == "end season" ~ "end season 2021"),
-                year = factor(year)) %>%
-
-  #and relevel factors rte_location (the reference will be ostermundigen),
-  #rte_elevation (the reference will be 585m a.s.l., which is also ostermundigen)
-  #and origin (the reference will be taxa originating in lowland populations)
-
-  dplyr::mutate(taxon = factor(taxon, levels = c("A2H", "A2L", "A2LH", "L4H", "L4L", "L4LH", "V2L"))) %>%
-  dplyr::mutate(rte_location = factor(rte_location, levels = c("ostermundigen", "pont de nant", "schynige platte"))) %>%
-  dplyr::mutate(rte_elevation.m. = factor(rte_elevation.m., levels = c("585", "1236", "1967"))) %>%
-  dplyr::mutate(origin = factor(origin, levels = c("lowland", "alpine", "hybrid"))) %>%
-  dplyr::mutate(phenotyping_run = factor(phenotyping_run, levels = c("pr1", "pr2", "pr3", "pr4", "pr5", "pr6", "pr7", "pr8"))) %>%
-  dplyr::mutate(type = factor(type, levels = c("transplant check1", "transplant check2", "early season", "full bloom", "end season"))) %>%
-  dplyr::mutate(type_date = factor(type_date, levels = c("early season 2020", "full bloom 2020", "end season 2020",
-                                                         "early season 2021", "full bloom 2021", "end season 2021"))) %>%
-  dplyr::mutate(year = factor(year, levels = c("2019", "2020", "2021")))
-
-
-#check structure
-str(data)
-data
-#=#
-
-### === transform rosette area from mm^2 to cm^2
-data$rosette_size_cm2 <- data$rosette_size_mm2/100
-
-### === Subset data of each elevation level
-data_omu <- subset(data, data$rte_location == "ostermundigen")
-data_pdn <- subset(data, data$rte_location == "pont de nant")
-data_schypla <- subset(data, data$rte_location == "schynige platte")
-
-### ===== ###
-
-### ========================= linear mixed models ================================= ###
-### LEAF NUMBER ###
-names(data)
-
-#full model
-full_model <- lmer(n_leaves ~ ploidy + origin + phenotyping_run +
-                     ploidy:origin + ploidy:phenotyping_run + origin:phenotyping_run +
-                     ploidy:origin:phenotyping_run +
-                     (1 | taxon:reciprocal_family), data = data_pdn, REML = T)
-
-anova(full_model)
-
-#check whether the model can be simplified by dropping one of the fixed effects
-drop1(full_model, test="Chisq")
-
-#CORRELATION BETWEEN FITTED AND OBSERVED VALUES (AKIN R^2)
-r.squaredGLMM(full_model)
-
-#write model results table
-write.table(anova(full_model), file = "./Model_results_tables/leaf_number_pr_OMU_anova_table.txt", row.names = T, col.names = T, quote = F, sep = "\t")
-write.table(anova(full_model), file = "./Model_results_tables/leaf_number_pr_PDN_anova_table.txt", row.names = T, col.names = T, quote = F, sep = "\t")
-write.table(anova(full_model), file = "./Model_results_tables/leaf_number_pr_SCHYPLA_anova_table.txt", row.names = T, col.names = T, quote = F, sep = "\t")
-
-### ===== ###
-
-### ========================= interaction plots ======================== ###
-ploidy_col <- c("#343148FF", "#D7C49EFF")
-
-### #2000x500
-data_emms <- as.data.frame(emmeans(full_model, c("ploidy", "phenotyping_run", "origin")))
-
+# Plot
 p3 <- data_emms %>%
-  ggplot( aes(x = phenotyping_run, y = emmean, group = ploidy, color = ploidy)) +
-  geom_line(aes(linetype = ploidy), size = 1.5) +
+  ggplot( aes(x = type, y = prob)) +
   geom_point(size = 7.5) +
-  geom_errorbar(aes(ymin = emmean-SE, ymax = emmean+SE), width = 0.2, size = 1.5) +
-  labs(x = NULL, y = "number of leaves") +
+  geom_errorbar(aes(ymin = prob-SE, ymax = prob+SE), width = 0.2, size = 1.5) +
+  labs(x = NULL, y = "Probability of failing an inspection") +
+  scale_y_continuous(limits = c(0, 0.5)) +
   theme_minimal() +
   theme(text = element_text(size=20),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
         axis.line = element_line(colour = "black", size = 0.5),
-        axis.ticks = element_line(colour = "black", size = 1)) +
-  facet_wrap(~origin)
+        axis.ticks = element_line(colour = "black", size = 1))
 
-p3 + scale_color_manual(values = ploidy_col)
+p3
 
-#Assemble leaf number end season 2020 and 2021 in one figure with same y-axis scale #1100x600
-p1 + ylim(-10, 180)  + scale_color_manual(values = ploidy_col)
-p2 + ylim(-10, 180)  + scale_color_manual(values = ploidy_col)
-p3 + ylim(-10, 180)  + scale_color_manual(values = ploidy_col)
-
-#=#
 
 
 
