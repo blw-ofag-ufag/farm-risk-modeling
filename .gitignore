@@ -2,3 +2,7 @@
 .DS_Store
 data/
 *.env
+Rplots.pdf
+*.rds
+!resources/predictors.rds
+!resources/variables.rds

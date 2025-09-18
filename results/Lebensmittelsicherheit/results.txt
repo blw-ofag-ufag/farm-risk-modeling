@@ -1,0 +1,551 @@
+Data Frame Summary  
+df  
+Dimensions: 53400 x 67  
+Duplicates: 779  
+
+--------------------------------------------------------------------------------------------------------------------------------
+Variable                                Stats / Values                   Freqs (% of Valid)      Graph                 Missing  
+--------------------------------------- -------------------------------- ----------------------- --------------------- ---------
+Betrieb                                 1. 0001bc0d942a475199760fc5f         3 (  0.0%)                                0        
+[factor]                                2. 00047b1a964d1a18c0108a359         0 (  0.0%)                                (0.0%)   
+                                        3. 000498857855053de661e11ba         2 (  0.0%)                                         
+                                        4. 0009c839050164ae8cfd59799         2 (  0.0%)                                         
+                                        5. 000d4c193ad91e2352ce12057         1 (  0.0%)                                         
+                                        6. 000dc20463cfc798e0f7b9888         0 (  0.0%)                                         
+                                        7. 0010711a51a8c38a627f5b00e         2 (  0.0%)                                         
+                                        8. 001170dca29fc50a7151e2c4c         0 (  0.0%)                                         
+                                        9. 0011d01b071710c6a0010e332         1 (  0.0%)                                         
+                                        10. 0012a7361f01ab98986f30b14        0 (  0.0%)                                         
+                                        [ 66135 others ]                 53389 (100.0%)          IIIIIIIIIIIIIIIIIII            
+
+Kontrolltyp                             1. Angemeldet                    43071 (80.7%)           IIIIIIIIIIIIIIII      0        
+[factor]                                2. Nicht angemeldet              10329 (19.3%)           III                   (0.0%)   
+
+Kontrollresultat                        1. Pass                          34527 (64.7%)           IIIIIIIIIIII          0        
+[factor]                                2. Fail                          18873 (35.3%)           IIIIIII               (0.0%)   
+
+Resultat der Vorkontrolle               1. Pass                          34948 (65.4%)           IIIIIIIIIIIII         0        
+[factor]                                2. Fail                          18452 (34.6%)           IIIIII                (0.0%)   
+
+Betriebsform                            1. Andere Betriebsform             363 ( 0.7%)                                 0        
+[factor]                                2. Betrieb (=Ganzjahresbetri     52537 (98.4%)           IIIIIIIIIIIIIIIIIII   (0.0%)   
+                                        3. Betriebsgemeinschaft (zäh       500 ( 0.9%)                                          
+                                        4. Gemeinschaftsweidebetrieb         0 ( 0.0%)                                          
+                                        5. Sömmerungsbetrieb                 0 ( 0.0%)                                          
+
+Rechtsform                              1. Juristische Person             5537 (10.4%)           II                    0        
+[factor]                                2. Natürliche Person             47863 (89.6%)           IIIIIIIIIIIIIIIII     (0.0%)   
+
+Kanton                                  1. AG                             4959 ( 9.3%)           I                     0        
+[factor]                                2. AI                              473 ( 0.9%)                                 (0.0%)   
+                                        3. AR                              829 ( 1.6%)                                          
+                                        4. BE                             6837 (12.8%)           II                             
+                                        5. BL                              961 ( 1.8%)                                          
+                                        6. FR                             1860 ( 3.5%)                                          
+                                        7. GE                              149 ( 0.3%)                                          
+                                        8. GL                              445 ( 0.8%)                                          
+                                        9. GR                             2082 ( 3.9%)                                          
+                                        10. JU                            1391 ( 2.6%)                                          
+                                        [ 15 others ]                    33414 (62.6%)           IIIIIIIIIIII                   
+
+Landwirtschaftliche Zone                1. Angestammte Flächen im Au         0 ( 0.0%)                                 0        
+[factor]                                2. Bergzone 1                     6065 (11.4%)           II                    (0.0%)   
+                                        3. Bergzone 2                     7770 (14.6%)           II                             
+                                        4. Bergzone 3                     4505 ( 8.4%)           I                              
+                                        5. Bergzone 4                     2733 ( 5.1%)           I                              
+                                        6. Hügelzone                      7818 (14.6%)           II                             
+                                        7. Nicht angestammte Flächen         0 ( 0.0%)                                          
+                                        8. Nicht zugeteilt / Andere        172 ( 0.3%)                                          
+                                        9. Sömmerungsgebiet                  0 ( 0.0%)                                          
+                                        10. Talzone                      24337 (45.6%)           IIIIIIIII                      
+
+Landwirtschaftliche Nutzfläche [ha]     Mean (sd) : 25.4 (18.8)          7453 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 21.7 < 765.4                                         :                              
+                                        IQR (CV) : 19.9 (0.7)                                    :                              
+                                                                                                 :                              
+
+Standardarbeitskraft                    Mean (sd) : 1.9 (1.8)            1017 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 1.6 < 107.7                                          :                              
+                                        IQR (CV) : 1.5 (0.9)                                     :                              
+                                                                                                 :                              
+
+Grossvieheinheiten                      Mean (sd) : 32.7 (31.6)          10282 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 24.5 < 626.1                                         :                              
+                                        IQR (CV) : 29.8 (1)                                      :                              
+                                                                                                 : .                            
+
+Erhält Direktzahlungen                  1. 0                              1783 ( 3.3%)                                 0        
+[factor]                                2. 1                             51617 (96.7%)           IIIIIIIIIIIIIIIIIII   (0.0%)   
+
+ÖLN-Anforderungen erfüllt               1. 0                              1637 ( 3.1%)                                 0        
+[factor]                                2. 1                             51763 (96.9%)           IIIIIIIIIIIIIIIIIII   (0.0%)   
+
+Biologisch bewirtschafteter Betrieb     1. 0                             44787 (83.9%)           IIIIIIIIIIIIIIII      0        
+[factor]                                2. 1                              8613 (16.1%)           III                   (0.0%)   
+
+Erfüllt Mindestnormen des BFS für       1. 0                               430 ( 0.8%)                                 0        
+einen Landwirtschaftsbetrieb            2. 1                             52970 (99.2%)           IIIIIIIIIIIIIIIIIII   (0.0%)   
+[factor]                                                                                                                        
+
+Anzahl Hofdüngerlieferungen             Mean (sd) : 1.5 (3.5)            62 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 108                                              :                              
+                                        IQR (CV) : 2 (2.2)                                       :                              
+                                                                                                 :                              
+
+Bilanz Gesamt-N bei Hofdüngern [kg]     Mean (sd) : 7.6 (2965.4)         13955 distinct values               :         0        
+[numeric]                               min < med < max:                                                     :         (0.0%)   
+                                        -543504 < 0 < 238596                                                 :                  
+                                        IQR (CV) : 163.2 (391.4)                                             :                  
+                                                                                                             :                  
+
+Bilanz P₂O₅ bei Hofdüngern [kg]         Mean (sd) : -12.3 (1787.3)       12178 distinct values                 :       0        
+[numeric]                               min < med < max:                                                       :       (0.0%)   
+                                        -361800 < 0 < 106905                                                   :                
+                                        IQR (CV) : 75.6 (-145.2)                                               :                
+                                                                                                               :                
+
+Bilanz K₂O bei Hofdüngern [kg]          Mean (sd) : 29.7 (665.5)         3458 distinct values            :             0        
+[numeric]                               min < med < max:                                                 :             (0.0%)   
+                                        -29808 < 0 < 38304                                               :                      
+                                        IQR (CV) : 0 (22.4)                                              :                      
+                                                                                                         :                      
+
+Bilanz Mg bei Hofdüngern [kg]           Mean (sd) : 4 (176.6)            2598 distinct values        :                 0        
+[numeric]                               min < med < max:                                             :                 (0.0%)   
+                                        -8400 < 0 < 28000                                            :                          
+                                        IQR (CV) : 0 (44.4)                                          :                          
+                                                                                                     :                          
+
+Anzahl Recyclingdüngerlieferungen       Mean (sd) : 0.2 (0.9)            23 distinct values      :                     0        
+[count]                                 min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 0 < 35                                               :                              
+                                        IQR (CV) : 0 (4.2)                                       :                              
+                                                                                                 :                              
+
+Bilanz Gesamt-N bei Recyclingdüngern    Mean (sd) : 85.3 (446.8)         3688 distinct values      :                   0        
+[kg]                                    min < med < max:                                           :                   (0.0%)   
+[numeric]                               -6001.7 < 0 < 24614                                        :                            
+                                        IQR (CV) : 0 (5.2)                                         :                            
+                                                                                                   : .                          
+
+Bilanz effektiver N bei                 Mean (sd) : 25.7 (181.1)         2713 distinct values          :               0        
+Recyclingdüngern [kg]                   min < med < max:                                               :               (0.0%)   
+[numeric]                               -6175 < 0 < 9450                                               :                        
+                                        IQR (CV) : 0 (7)                                               :                        
+                                                                                                       :                        
+
+Bilanz P₂O₅ bei Recyclingdüngern        Mean (sd) : 37.7 (189.6)         3425 distinct values      :                   0        
+[kg]                                    min < med < max:                                           :                   (0.0%)   
+[numeric]                               -1973.8 < 0 < 9214                                         :                            
+                                        IQR (CV) : 0 (5)                                           :                            
+                                                                                                   :                            
+
+Bilanz K₂O bei Recyclingdüngern [kg]    Mean (sd) : 84.3 (449.4)         3693 distinct values        :                 0        
+[numeric]                               min < med < max:                                             :                 (0.0%)   
+                                        -8001.7 < 0 < 22477                                          :                          
+                                        IQR (CV) : 0 (5.3)                                           :                          
+                                                                                                     :                          
+
+Bilanz Mg bei Recyclingdüngern [kg]     Mean (sd) : 23 (130.6)           3135 distinct values      :                   0        
+[numeric]                               min < med < max:                                           :                   (0.0%)   
+                                        -592 < 0 < 5292.4                                          :                            
+                                        IQR (CV) : 0 (5.7)                                         :                            
+                                                                                                   :                            
+
+Gesamthaft gelieferte Milch [kg]        Mean (sd) : 83154.9 (149297.6)   21505 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 2753640                                          :                              
+                                        IQR (CV) : 123704 (1.8)                                  :                              
+                                                                                                 : .                            
+
+Anteil von Bäumen bedeckter Fläche      Mean (sd) : 2.8 (3.5)            51 distinct values      :                     0        
+[%]                                     min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 2 < 57                                               :                              
+                                        IQR (CV) : 3 (1.3)                                       :                              
+                                                                                                 : .                            
+
+Anteil Flächen ausserhalb der LN [%]    Mean (sd) : 10.6 (12.3)          101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 6 < 100                                              :                              
+                                        IQR (CV) : 13 (1.2)                                      : .                            
+                                                                                                 : : . .                        
+
+Anteil Flächen mit Dauerkulturen [%]    Mean (sd) : 1.1 (5.9)            101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (5.5)                                       :                              
+                                                                                                 :                              
+
+Anteil Flächen mit Kulturen in          Mean (sd) : 0 (0.6)              25 distinct values      :                     0        
+ganzjährig geschütztem Anbau [%]        min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 0 < 67                                               :                              
+                                        IQR (CV) : 0 (26.8)                                      :                              
+                                                                                                 :                              
+
+Anteil Grünfläche [%]                   Mean (sd) : 64.8 (24.3)          101 distinct values                 . : : :   0        
+[numeric]                               min < med < max:                                                   . : : : :   (0.0%)   
+                                        0 < 69 < 100                                                     : : : : : :            
+                                        IQR (CV) : 37 (0.4)                                        . : : : : : : : :            
+                                                                                                 . : : : : : : : : :            
+
+Anteil offene Ackerfläche [%]           Mean (sd) : 19.4 (24.5)          100 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 6 < 100                                              :                              
+                                        IQR (CV) : 36 (1.3)                                      :                              
+                                                                                                 : : . . . . . .                
+
+Anteil weiterer Flächen innerhalb der   Mean (sd) : 1.3 (3.2)            53 distinct values      :                     0        
+LN [%]                                  min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 0 < 100                                              :                              
+                                        IQR (CV) : 1 (2.4)                                       :                              
+                                                                                                 :                              
+
+Anteil Dauerkulturen [%]                Mean (sd) : 1.2 (6.7)            7100 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (5.4)                                       :                              
+                                                                                                 :                              
+
+Anteil anderer Elemente [%]             Mean (sd) : 3.5 (6)              37894 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 2.1 < 700                                            :                              
+                                        IQR (CV) : 3.4 (1.7)                                     :                              
+                                                                                                 :                              
+
+Anteil Brotgetreide [%]                 Mean (sd) : 6.5 (10)             19699 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 11.7 (1.5)                                    :                              
+                                                                                                 : : .                          
+
+Anteil Dauergrünflächen [%]             Mean (sd) : 64.3 (32.8)          39535 distinct values                     :   0        
+[numeric]                               min < med < max:                                                           :   (0.0%)   
+                                        0 < 70 < 100                                                               :            
+                                        IQR (CV) : 65.7 (0.5)                                        .             :            
+                                                                                                 . : : : : : . . : :            
+
+Anteil Flächen ausserhalb der LN        Mean (sd) : 16.7 (70.9)          39200 distinct values   :                     0        
+relativ zur LN [%]                      min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 7.1 < 8000                                           :                              
+                                        IQR (CV) : 16 (4.3)                                      :                              
+                                                                                                 :                              
+
+Anteil Kartoffeln [%]                   Mean (sd) : 0.6 (3)              4189 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 68.8                                             :                              
+                                        IQR (CV) : 0 (4.9)                                       :                              
+                                                                                                 :                              
+
+Anteil Ölsaaten [%]                     Mean (sd) : 2.2 (5.1)            9627 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 51                                               :                              
+                                        IQR (CV) : 0 (2.3)                                       :                              
+                                                                                                 : . .                          
+
+Anteil Silomais [%]                     Mean (sd) : 4.3 (7)              19957 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 94.6                                             :                              
+                                        IQR (CV) : 7.3 (1.6)                                     :                              
+                                                                                                 : :                            
+
+Anteil weiterer landwirtschaftlicher    Mean (sd) : 1.5 (3.7)            24275 distinct values   :                     0        
+Flächen [%]                             min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 0.3 < 100                                            :                              
+                                        IQR (CV) : 1.5 (2.4)                                     :                              
+                                                                                                 :                              
+
+Anteil BFF-Elemente [%]                 Mean (sd) : 0.6 (2.5)            8441 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (4.4)                                       :                              
+                                                                                                 :                              
+
+Anteil Futtergetreide [%]               Mean (sd) : 3.7 (7)              16578 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 93.3                                             :                              
+                                        IQR (CV) : 5.9 (1.9)                                     :                              
+                                                                                                 : .                            
+
+Anteil Körnerleguminosen [%]            Mean (sd) : 0.5 (2.3)            3608 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 74.5                                             :                              
+                                        IQR (CV) : 0 (4.5)                                       :                              
+                                                                                                 :                              
+
+Anteil Körnermais [%]                   Mean (sd) : 1.2 (4.3)            5811 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 93.1                                             :                              
+                                        IQR (CV) : 0 (3.5)                                       :                              
+                                                                                                 :                              
+
+Anteil Kunstwiese [%]                   Mean (sd) : 11.1 (14.8)          26670 distinct values   :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 3.2 < 100                                            :                              
+                                        IQR (CV) : 19 (1.3)                                      : .                            
+                                                                                                 : : : . .                      
+
+Anteil Zuckerrüben [%]                  Mean (sd) : 1.2 (3.8)            5320 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 55.4                                             :                              
+                                        IQR (CV) : 0 (3.2)                                       :                              
+                                                                                                 : .                            
+
+Anteil Schutzkulturen [%]               Mean (sd) : 0 (0.7)              834 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (25.9)                                      :                              
+                                                                                                 :                              
+
+Anteil Spezialkulturen [%]              Mean (sd) : 0.8 (4)              5582 distinct values    :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (4.9)                                       :                              
+                                                                                                 :                              
+
+Anteil Saat- und Pflanzgut [%]          Mean (sd) : 0.1 (1.3)            737 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 49.5                                             :                              
+                                        IQR (CV) : 0 (9.7)                                       :                              
+                                                                                                 :                              
+
+Anteil übrige offene Ackerfläche [%]    Mean (sd) : 0 (0.7)              615 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 80.2                                             :                              
+                                        IQR (CV) : 0 (19.3)                                      :                              
+                                                                                                 :                              
+
+Anteil Nachwachsende Rohstoffe [%]      Mean (sd) : 0 (0.3)              82 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 20.8                                             :                              
+                                        IQR (CV) : 0 (29)                                        :                              
+                                                                                                 :                              
+
+Anteil Futterrüben [%]                  Mean (sd) : 0 (0.3)              516 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 14.9                                             :                              
+                                        IQR (CV) : 0 (12.1)                                      :                              
+                                                                                                 :                              
+
+Anteil Flächen im Sömmerungsgebiet      Mean (sd) : 24 (5409.3)          507 distinct values     :                     0        
+[%]                                     min < med < max:                                         :                     (0.0%)   
+[numeric]                               0 < 0 < 1250000                                          :                              
+                                        IQR (CV) : 0 (225.2)                                     :                              
+                                                                                                 :                              
+
+Anteil andere Raufutterverzehrer [%]    Mean (sd) : 0.7 (6.9)            98 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (10.5)                                      :                              
+                                                                                                 :                              
+
+Anteil anderer Tiere [%]                Mean (sd) : 0 (1.4)              47 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 93                                               :                              
+                                        IQR (CV) : 0 (35.4)                                      :                              
+                                                                                                 :                              
+
+Anteil Haustiere [%]                    Mean (sd) : 0.5 (4.8)            98 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (9.6)                                       :                              
+                                                                                                 :                              
+
+Anteil Hasen [%]                        Mean (sd) : 0.6 (5.5)            100 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (8.9)                                       :                              
+                                                                                                 :                              
+
+Anteil Hühner [%]                       Mean (sd) : 5.8 (17.4)           101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 1 (3)                                         :                              
+                                                                                                 :                              
+
+Anteil Pferde [%]                       Mean (sd) : 8.9 (23.6)           101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 1 (2.6)                                       :                              
+                                                                                                 :                              
+
+Anteil Rinder [%]                       Mean (sd) : 68.1 (38.6)          101 distinct values                       :   0        
+[numeric]                               min < med < max:                                                           :   (0.0%)   
+                                        0 < 90 < 100                                                               :            
+                                        IQR (CV) : 64 (0.6)                                      :                 :            
+                                                                                                 : . . . . . . . : :            
+
+Anteil Schafe [%]                       Mean (sd) : 7.5 (22.4)           101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (3)                                         :                              
+                                                                                                 :                              
+
+Anteil Schweine [%]                     Mean (sd) : 3.5 (14.7)           101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (4.2)                                       :                              
+                                                                                                 :                              
+
+Anteil andere Geflügel [%]              Mean (sd) : 0.4 (4.5)            94 distinct values      :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (10)                                        :                              
+                                                                                                 :                              
+
+Anteil Ziegen [%]                       Mean (sd) : 3.5 (13.4)           101 distinct values     :                     0        
+[numeric]                               min < med < max:                                         :                     (0.0%)   
+                                        0 < 0 < 100                                              :                              
+                                        IQR (CV) : 0 (3.8)                                       :                              
+                                                                                                 :                              
+--------------------------------------------------------------------------------------------------------------------------------
+
+Variables not used for modeling:
+================================
+SB
+Betrieb hat Strukturen (im Sömmerungsgebiet)
+Bilanz effektiver N bei Hofdüngern
+
+FORMULA:
+========
+result ~ type + previous + farmType + legalForm + canton + zone + 
+    LN + SAK + GVE + DZ + proofMet + organic + surveyStdMet + 
+    hofDeliv + hofNtot + hofP205 + hofK2O + hofMg + recDeliv + 
+    recNtot + recNeff + recP205 + recK2O + recMg + milk + trees + 
+    nonLNarea + perennialCropsArea + protectedCropsArea + grassArea + 
+    openArableArea + otherLNarea + perennials + elements + breadCereals + 
+    perennialGrassland + nonAgArea + potatos + oilseeds + siloMaize + 
+    otherAgArea + BFFelements + fodderCereals + legumes + grainMaize + 
+    artificialGrassland + sugarBeets + protectedCrops + specialCrops + 
+    seedMaterials + otherArea + renewals + fodderBeets + alps + 
+    roughage + other_animals + hobby_pets + rabbits + poultry + 
+    horses + cattle + sheep + pigs + other_poultry + goats
+result ~ type + previous + farmType + legalForm + canton + zone + 
+    LN + SAK + GVE + DZ + proofMet + organic + surveyStdMet + 
+    hofDeliv + hofNtot + hofP205 + hofK2O + hofMg + recDeliv + 
+    recNtot + recNeff + recP205 + recK2O + recMg + milk + trees + 
+    nonLNarea + perennialCropsArea + protectedCropsArea + grassArea + 
+    openArableArea + otherLNarea + perennials + elements + breadCereals + 
+    perennialGrassland + nonAgArea + potatos + oilseeds + siloMaize + 
+    otherAgArea + BFFelements + fodderCereals + legumes + grainMaize + 
+    artificialGrassland + sugarBeets + protectedCrops + specialCrops + 
+    seedMaterials + otherArea + renewals + fodderBeets + alps + 
+    roughage + other_animals + hobby_pets + rabbits + poultry + 
+    horses + cattle + sheep + pigs + other_poultry + goats
+
+Call:
+ randomForest(formula = formula, data = data$train, ntree = 500,      sampsize = sample_sizes, importance = TRUE) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 8
+
+        OOB estimate of  error rate: 31.57%
+Confusion matrix:
+      Pass Fail class.error
+Pass 20524 7086   0.2566461
+Fail  6410 8724   0.4235496
+Confusion Matrix and Statistics
+
+          Reference
+Prediction Pass Fail
+      Pass 5332 1466
+      Fail 1585 2273
+                                         
+               Accuracy : 0.7137         
+                 95% CI : (0.705, 0.7223)
+    No Information Rate : 0.6491         
+    P-Value [Acc > NIR] : < 2e-16        
+                                         
+                  Kappa : 0.376          
+                                         
+ Mcnemar's Test P-Value : 0.03266        
+                                         
+            Sensitivity : 0.6079         
+            Specificity : 0.7709         
+         Pos Pred Value : 0.5892         
+         Neg Pred Value : 0.7843         
+             Prevalence : 0.3509         
+         Detection Rate : 0.2133         
+   Detection Prevalence : 0.3620         
+      Balanced Accuracy : 0.6894         
+                                         
+       'Positive' Class : Fail           
+                                         
+
+
+ROC-AUC and Precision-Recall AUC:
+===================================
+ROC-AUC:  0.76 
+PR-AUC:  0.636 
+
+
+|                                                               |    Pass|   Fail| MeanDecreaseAccuracy| MeanDecreaseGini|
+|:--------------------------------------------------------------|-------:|------:|--------------------:|----------------:|
+|Kanton                                                         | 127.628| 57.830|              191.618|         1963.767|
+|Gesamthaft gelieferte Milch                                    |  26.174| 59.113|               47.936|          728.318|
+|Grossvieheinheiten                                             |  23.570| 23.002|               46.653|          803.484|
+|Anteil anderer Elemente                                        |  29.189|  2.003|               33.555|          624.789|
+|Resultat der Vorkontrolle                                      |  24.945| 32.398|               33.455|          173.325|
+|Landwirtschaftliche Nutzfläche                                 |  17.513| 18.433|               30.798|          705.105|
+|Standardarbeitskraft                                           |  16.454| 14.262|               30.630|          676.098|
+|Anteil Grünfläche                                              |  24.197|  7.471|               30.439|          568.507|
+|Anteil Dauergrünflächen                                        |  22.329| 10.888|               30.165|          566.107|
+|Anteil Flächen ausserhalb der LN relativ zur LN                |  18.320| 10.215|               29.003|          607.390|
+|Landwirtschaftliche Zone                                       |  24.863| -3.900|               25.953|          287.182|
+|Anteil Flächen ausserhalb der LN                               |  16.279|  7.803|               24.312|          425.333|
+|Anteil offene Ackerfläche                                      |  17.451|  9.839|               24.250|          330.089|
+|Anteil Kunstwiese                                              |  14.661|  7.812|               22.560|          350.689|
+|Kontrolltyp                                                    |  -0.963| 38.518|               21.227|          165.902|
+|Anteil weiterer landwirtschaftlicher Flächen                   |  19.693|  0.723|               20.864|          415.895|
+|Anteil Brotgetreide                                            |  12.863| 10.784|               20.754|          299.116|
+|Anteil von Bäumen bedeckter Fläche                             |  15.475|  5.744|               20.493|          293.000|
+|Bilanz Gesamt-N bei Hofdüngern                                 |  13.336|  7.708|               20.191|          322.797|
+|Anteil Rinder                                                  |   9.652| 15.164|               19.488|          405.871|
+|Bilanz P₂O₅ bei Hofdüngern                                     |  11.542|  9.868|               18.846|          324.734|
+|Anteil Dauerkulturen                                           |  10.472| 11.265|               18.251|          145.940|
+|Anteil Silomais                                                |  13.380|  1.239|               17.125|          276.208|
+|Anteil weiterer Flächen innerhalb der LN                       |  14.150|  1.325|               16.401|          194.359|
+|Biologisch bewirtschafteter Betrieb                            |  15.443|  1.102|               15.638|           70.435|
+|Anteil Hühner                                                  |  15.019|  0.851|               14.935|          244.680|
+|Anteil Ölsaaten                                                |   8.437|  8.249|               14.787|          153.567|
+|Anteil Pferde                                                  |   8.130|  9.744|               13.692|          217.160|
+|Anteil Flächen mit Dauerkulturen                               |   9.420|  6.713|               13.682|           88.340|
+|Anteil Schweine                                                |  11.321|  2.306|               13.157|          123.767|
+|Anzahl Hofdüngerlieferungen                                    |  11.579|  0.375|               12.954|          196.473|
+|Bilanz Mg bei Recyclingdüngern                                 |   8.605|  2.328|               11.484|           61.114|
+|Bilanz Gesamt-N bei Recyclingdüngern                           |   9.502| -0.531|               11.028|           57.263|
+|Bilanz P₂O₅ bei Recyclingdüngern                               |   8.028|  2.890|               10.690|           58.994|
+|Rechtsform                                                     |   8.466|  3.958|                9.738|           55.464|
+|Bilanz K₂O bei Recyclingdüngern                                |   6.252|  3.238|                9.316|           57.955|
+|Anteil Futtergetreide                                          |   0.144| 11.924|                7.351|          223.158|
+|Anteil BFF-Elemente                                            |   4.229|  5.328|                7.281|          150.423|
+|Anzahl Recyclingdüngerlieferungen                              |   6.806| -0.885|                7.189|           40.398|
+|Anteil Körnermais                                              |   2.326|  7.167|                6.806|           95.379|
+|ÖLN-Anforderungen erfüllt                                      |   2.029|  8.876|                6.614|           19.339|
+|Anteil Kartoffeln                                              |   3.053|  4.817|                6.103|           79.501|
+|Bilanz effektiver N bei Recyclingdüngern                       |   4.702|  0.440|                5.716|           52.748|
+|Anteil Ziegen                                                  |   6.327| -1.238|                5.597|          175.703|
+|Anteil Körnerleguminosen                                       |   1.601|  7.026|                5.256|           61.553|
+|Erhält Direktzahlungen                                         |   0.309|  9.814|                5.021|           18.847|
+|Anteil Flächen im Sömmerungsgebiet                             |   2.621|  5.938|                4.887|           18.105|
+|Anteil Spezialkulturen                                         |  -4.508| 15.060|                4.475|           96.890|
+|Bilanz Mg bei Hofdüngern                                       |   1.906|  4.188|                4.329|           73.980|
+|Erfüllt Mindestnormen des BFS für einen Landwirtschaftsbetrieb |   3.566| -0.318|                3.731|            4.977|
+|Anteil andere Raufutterverzehrer                               |   1.418|  3.633|                3.340|           32.453|
+|Betriebsform                                                   |  -0.634|  7.264|                2.658|           13.732|
+|Bilanz K₂O bei Hofdüngern                                      |  -1.510|  7.115|                2.405|           76.118|
+|Anteil Schutzkulturen                                          |  -0.226|  4.697|                2.343|           18.493|
+|Anteil Haustiere                                               |   0.158|  2.786|                1.618|           43.085|
+|Anteil Zuckerrüben                                             |   0.573|  1.014|                1.101|           77.875|
+|Anteil anderer Tiere                                           |   0.265|  0.959|                0.717|            4.497|
+|Anteil Hasen                                                   |  -0.027|  1.363|                0.685|           48.849|
+|Anteil Saat- und Pflanzgut                                     |   2.129| -3.399|                0.069|           17.882|
+|Anteil übrige offene Ackerfläche                               |  -0.044| -0.096|               -0.085|           18.186|
+|Anteil Flächen mit Kulturen in ganzjährig geschütztem Anbau    |   0.227| -1.523|               -0.334|            3.982|
+|Anteil Schafe                                                  |  -8.189| 16.054|               -0.912|          194.781|
+|Anteil andere Geflügel                                         |  -1.616| -0.762|               -1.843|           36.894|
+|Anteil Futterrüben                                             |  -0.322| -3.446|               -2.283|           15.657|
+|Anteil Nachwachsende Rohstoffe                                 |  -4.670| -0.742|               -4.698|            1.761|
