@@ -57,7 +57,7 @@ source("scripts/helpers.R")
 meta <- yaml::read_yaml("resources/schema.yaml")
 
 #' Read full data and split it it into train/test
-data <- readRDS("data/data.rds") %>%
+data <- base::readRDS("data/data.rds") %>%
 
   data_split(
     theme = theme,
@@ -66,12 +66,12 @@ data <- readRDS("data/data.rds") %>%
   )
 
 #' Read predictors
-variables <- readRDS("resources/variables.rds")
+variables <- base::readRDS("resources/variables.rds")
 
 #' Open a "log" file to write the results to
-results_directory <- file.path("results", theme)
-if (!dir.exists(results_directory)) dir.create(results_directory)
-sink(file.path("results", theme, "results.txt"))
+results_directory <- base::file.path("results", theme)
+if (!base::dir.exists(results_directory)) base::dir.create(results_directory)
+base::sink(base::file.path("results", theme, "results.txt"))
 
 #' Make a summary of the specific subset of the data used here (subset by theme)
 df <- label_dataset(data$original, metadata = meta, lang = "de", unit = TRUE)
@@ -86,7 +86,10 @@ summarytools::dfSummary(
 
 #' Vector with predictors (remove the ones dropped by the split, this might be
 #' the case because there is only one factor left in the training data)
-predictors <- setdiff(variables[variables %in% colnames(data$train)], "result")
+predictors <- base::setdiff(
+  x = variables[variables %in% base::colnames(data$train)],
+  y = "result"
+)
 
 #' List the variables that are *not* used for modelling due to incompleteness
 unused_variables <- variables[!(variables %in% predictors)][-1]
@@ -132,7 +135,7 @@ n_fail <- sum(data$train$result == "Fail")
 sample_sizes <- c(Pass = n_fail, Fail = n_fail)
 
 #' Train the random forest model
-model <- randomForest(
+model <- randomForest::randomForest(
   formula = formula,
   data = data$train,
   ntree = 500,
@@ -156,7 +159,7 @@ predictions_prob <- predict(model, newdata = data$test, type = "prob")
 #' Generate the confusion matrix and a comprehensive set of statistics. We set
 #' `positive = "Fail"` to get metrics like sensitivity and specificity from the
 #' perspective of correctly identifying failed inspections.
-confusion_matrix <- confusionMatrix(
+confusion_matrix <- caret::confusionMatrix(
   data = predictions,
   reference = data$test$result,
   positive = "Fail"
@@ -178,14 +181,14 @@ print(confusion_matrix)
 #' =============================================================================
 
 #' Calculate ROC curve and AUC
-roc_obj <- roc(data$test$result, predictions_prob[, "Fail"])
-auc_value <- auc(roc_obj)
+roc_obj <- pROC::roc(data$test$result, predictions_prob[, "Fail"])
+auc_value <- pROC::auc(roc_obj)
 
 #' Save ROC object
 saveRDS(roc_obj, file.path("results", theme, "roc_object.rds"))
 
 #' Calculate Precision-Recall curve and AUC
-pr_obj <- pr.curve(
+pr_obj <- PRROC::pr.curve(
   scores.class0 = predictions_prob[, "Fail"], 
   weights.class0 = as.numeric(data$test$result == "Fail"),
   curve = TRUE

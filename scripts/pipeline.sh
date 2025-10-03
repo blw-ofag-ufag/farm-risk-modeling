@@ -1,5 +1,8 @@
+# Install all necessary R packages
+Rscript scripts/packages.R
+
 # Run pre-processing of the data
-# Rscript scripts/data-preparation.R
+Rscript scripts/data-preparation.R
 
 # Overall analysis of the data
 Rscript scripts/data-analysis.R
