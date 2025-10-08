@@ -75,6 +75,7 @@ base::sink(base::file.path("results", theme, "results.txt"))
 
 #' Make a summary of the specific subset of the data used here (subset by theme)
 df <- label_dataset(data$original, metadata = meta, lang = "de", unit = TRUE)
+print_title("summary of the specific subset of the data used")
 summarytools::dfSummary(
   x = df,
   varnumbers = FALSE,
@@ -83,6 +84,11 @@ summarytools::dfSummary(
   silent = TRUE,
   style = "multiline",
 )
+
+#' The summary shows some predictors have `Inf` values, which must be removed.
+#' We'll replace them with NA and impute them in the next step.
+data$train[sapply(data$train, is.infinite)] <- NA
+data$test[sapply(data$test, is.infinite)] <- NA
 
 #' Vector with predictors (remove the ones dropped by the split, this might be
 #' the case because there is only one factor left in the training data)
@@ -93,55 +99,63 @@ predictors <- base::setdiff(
 
 #' List the variables that are *not* used for modelling due to incompleteness
 unused_variables <- variables[!(variables %in% predictors)][-1]
-cat(sprintf("
-Variables not used for modeling:
-================================
-%s
-", paste(get_titles(unused_variables, meta, "de", FALSE), collapse = "\n")))
+print_title("unused variables")
+cat(paste(get_titles(unused_variables, meta, "de", FALSE), collapse = "\n"))
 
 #' Create the model formula. The goal is to predict `result` using all other
 #' variables defined in the `variables` vector.
 formula <- as.formula(paste("result ~", paste(predictors, collapse = " + ")))
-cat("
-FORMULA:
-========
-")
+print_title("formula")
 print(formula)
 
 #' =============================================================================
-#' TRAIN THE RANDOM FOREST MODEL
+#' HYPERPARAMETER TUNING AND MODEL TRAINING
 #' -----------------------------------------------------------------------------
 #' A random forest model is trained on the prepared `train` dataset to predict
 #' the inspection `result`.
 #' =============================================================================
 
-#' The summary shows some predictors have `Inf` values, which must be removed.
-#' We'll replace them with NA and impute them in the next step.
-data$train[sapply(data$train, is.infinite)] <- NA
-data$test[sapply(data$test, is.infinite)] <- NA
+#' Define the cross-validation method. We use 10-fold CV to get a robust
+#' estimate of performance. We also tell caret to calculate metrics needed for
+#' the ROC curve. The `sampling = "down"` argument handles class imbalance by
+#' down-sampling the majority class ("Pass") in each resample to be the same
+#' size as the minority class ("Fail").
+train_control <- caret::trainControl(
+  method = "cv", # cross validation
+  number = 10,
+  summaryFunction = twoClassSummary, # calculates ROC, Sens, Spec
+  classProbs = TRUE,
+  verboseIter = FALSE,
+  sampling = "down" # handles class imbalance
+)
 
-#' Random forests cannot handle missing values (`NA`). We'll use a fast
-#' imputation method, `na.roughfix`, which replaces numeric NAs with the
-#' column median and factor NAs with the mode.
-data$train <- randomForest::na.roughfix(data$train)
-data$test <- randomForest::na.roughfix(data$test)
+#' Define the grid of hyperparameters to search; for this random forest model,
+#' that is only 'mtry', the the number of variables randomly sampled at each
+#' split. We'll test a sequence of values to see which one performs best.
+tune_grid <- base::expand.grid(
+  mtry = seq(from = 2, to = floor(sqrt(length(predictors)))*2, by = 2)
+)
 
-#' The target variable `result` is almost always imbalanced, as there are many
-#' more farms that completely pass an inspection than fail anything. To correct
-#' for this, we'll use stratified sampling by setting the `sampsize` argument.
-#' We'll sample from each class an equal number of times, equivalent to the size
-#' of the minority class (`"Fail"`).
-n_fail <- sum(data$train$result == "Fail")
-sample_sizes <- c(Pass = n_fail, Fail = n_fail)
-
-#' Train the random forest model
-model <- randomForest::randomForest(
-  formula = formula,
+#' Train the model using caret's `train` function
+#' This will automatically test all mtry values in our tune_grid using
+#' 10-fold CV and select the best one based on the ROC metric.
+model_tuned <- caret::train(
+  form = formula,
   data = data$train,
-  ntree = 500,
-  sampsize = sample_sizes,
+  preProcess = "medianImpute",
+  method = "rf",
+  trControl = train_control,
+  tuneGrid = tune_grid,
+  metric = "ROC",
   importance = TRUE
 )
+
+#' Print the results of the tuning process
+print_title("Results of the tuning process")
+print(model_tuned)
+
+#' The best model found during cross-validation is stored in the `finalModel` element
+model <- model_tuned$finalModel
 
 #' =============================================================================
 #' MODEL PERFORMANCE EVALUATION
@@ -151,10 +165,10 @@ model <- randomForest::randomForest(
 #' =============================================================================
 
 #' Generate predictions on the test set
-predictions <- predict(model, newdata = data$test)
+predictions <- predict(model_tuned, newdata = data$test)
 
 # Generate class probabilities needed for ROC and PR curves
-predictions_prob <- predict(model, newdata = data$test, type = "prob")
+predictions_prob <- predict(model_tuned, newdata = data$test, type = "prob")
 
 #' Generate the confusion matrix and a comprehensive set of statistics. We set
 #' `positive = "Fail"` to get metrics like sensitivity and specificity from the
@@ -169,8 +183,9 @@ confusion_matrix <- caret::confusionMatrix(
 saveRDS(confusion_matrix, file.path("results", theme, "confusion-matrix.rds"))
 
 #' Print results to text summary
-print(formula)
+print_title("model summary")
 print(model)
+print_title("confusion matrix")
 print(confusion_matrix)
 
 
@@ -181,7 +196,7 @@ print(confusion_matrix)
 #' =============================================================================
 
 #' Calculate ROC curve and AUC
-roc_obj <- pROC::roc(data$test$result, predictions_prob[, "Fail"])
+roc_obj <- pROC::roc(data$test$result, predictions_prob[, "Fail"], quiet = TRUE)
 auc_value <- pROC::auc(roc_obj)
 
 #' Save ROC object
@@ -199,10 +214,58 @@ pr_auc_value <- pr_obj$auc.integral
 saveRDS(pr_obj, file.path("results", theme, "pr_object.rds"))
 
 #' Print AUC values to the summary file
-cat("\n\nROC-AUC and Precision-Recall AUC:\n")
-cat("===================================\n")
+print_title("ROC-AUC and Precision-Recall AUC")
 cat("ROC-AUC: ", round(auc_value, 3), "\n")
 cat("PR-AUC: ", round(pr_auc_value, 3), "\n")
+
+#' =============================================================================
+#' EVALUATION OF PREDICTIONS CONSIDERING NON-AVAILABLE PREDICTORS
+#' -----------------------------------------------------------------------------
+#' Here, we evaluate the model's performance on subsets of the test data,
+#' grouped by canton and inspection type. This helps us understand how well the
+#' model predicts outcomes based on inherent farm features, controlling for
+#' these contextual variables.
+#' =============================================================================
+
+# create a data frame with true values, predictions, and grouping variables
+evaluation_df <- tibble::tibble(
+  canton = data$test$canton,
+  type = data$test$type,
+  result = data$test$result,
+  pred_prob_fail = predictions_prob[, "Fail"]
+)
+
+# compute ROC-AUC for each combination of inspection canton and type
+performance_by_group <- evaluation_df %>%
+  dplyr::group_by(canton, type) %>%
+  dplyr::summarise(
+    N = dplyr::n(),
+    fails = sum(result == "Fail"),
+    roc_auc = if (length(unique(result)) > 1) {
+      as.numeric(pROC::auc(pROC::roc(result, pred_prob_fail, quiet = TRUE)))
+    } else {
+      NA
+    },
+    pr_auc = if (length(unique(result)) > 1) {
+      PRROC::pr.curve(
+        scores.class0 = pred_prob_fail[result == "Fail"],
+        scores.class1 = pred_prob_fail[result == "Pass"],
+        curve = FALSE
+      )$auc.integral
+    } else {
+      NA_real_
+    },
+    .groups = "drop"
+  ) %>%
+  dplyr::arrange(desc(roc_auc)) # Sort by performance
+
+# 3. Print the results to the console and the log file
+print_title("Grouped Model Performance (by Canton and Inspection Type)")
+print(knitr::kable(performance_by_group, digits = 3, format = "markdown"))
+
+# Also save results as a CSV
+write.csv(performance_by_group, file.path("results", theme, "cross-wise-results.csv"))
+
 
 #' =============================================================================
 #' POST-HOC MODEL ANALYSIS
@@ -229,6 +292,7 @@ rownames(sorted_importance_scores) <- get_titles(
 )
 
 #' Print the sorted scores to the console
+print_title("sorted importance scores")
 print(knitr::kable(sorted_importance_scores, digits = 3))
 
 #' TODO: Detect interaction effects using `iml` functions...
