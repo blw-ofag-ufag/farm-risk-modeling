@@ -1,3 +1,8 @@
+
+
+SUMMARY OF THE SPECIFIC SUBSET OF THE DATA USED:
+================================================
+
 Data Frame Summary  
 df  
 Dimensions: 16349 x 67  
@@ -403,14 +408,17 @@ Anteil Ziegen [%]                       Mean (sd) : 3.2 (12.4)            99 dis
                                                                                                   :                               
 ----------------------------------------------------------------------------------------------------------------------------------
 
-Variables not used for modeling:
-================================
+
+UNUSED VARIABLES:
+=================
+
 SB
 Betrieb hat Strukturen (im Sömmerungsgebiet)
 Bilanz effektiver N bei Hofdüngern
 
 FORMULA:
 ========
+
 result ~ type + previous + farmType + legalForm + canton + zone + 
     LN + SAK + GVE + DZ + proofMet + organic + surveyStdMet + 
     hofDeliv + hofNtot + hofP205 + hofK2O + hofMg + recDeliv + 
@@ -423,129 +431,273 @@ result ~ type + previous + farmType + legalForm + canton + zone +
     seedMaterials + otherArea + renewals + fodderBeets + alps + 
     roughage + other_animals + hobby_pets + rabbits + poultry + 
     horses + cattle + sheep + pigs + other_poultry + goats
-result ~ type + previous + farmType + legalForm + canton + zone + 
-    LN + SAK + GVE + DZ + proofMet + organic + surveyStdMet + 
-    hofDeliv + hofNtot + hofP205 + hofK2O + hofMg + recDeliv + 
-    recNtot + recNeff + recP205 + recK2O + recMg + milk + trees + 
-    nonLNarea + perennialCropsArea + protectedCropsArea + grassArea + 
-    openArableArea + otherLNarea + perennials + elements + breadCereals + 
-    perennialGrassland + nonAgArea + potatos + oilseeds + siloMaize + 
-    otherAgArea + BFFelements + fodderCereals + legumes + grainMaize + 
-    artificialGrassland + sugarBeets + protectedCrops + specialCrops + 
-    seedMaterials + otherArea + renewals + fodderBeets + alps + 
-    roughage + other_animals + hobby_pets + rabbits + poultry + 
-    horses + cattle + sheep + pigs + other_poultry + goats
+
+
+RESULTS OF THE TUNING PROCESS:
+==============================
+
+Random Forest 
+
+12995 samples
+   65 predictor
+    2 classes: 'Pass', 'Fail' 
+
+Pre-processing: median imputation (99) 
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 11695, 11696, 11696, 11695, 11695, 11695, ... 
+Addtional sampling using down-sampling prior to pre-processing
+
+Resampling results across tuning parameters:
+
+  mtry  ROC        Sens       Spec     
+   2    0.6260838  0.5937995  0.5694053
+   4    0.6351371  0.6127681  0.5850156
+   6    0.6380081  0.6159411  0.5821596
+   8    0.6335376  0.6126004  0.5584311
+  10    0.6347073  0.6139890  0.5725156
+  12    0.6454714  0.6188719  0.6046166
+  14    0.6501346  0.6209886  0.5849961
+  16    0.6419132  0.6176536  0.5750978
+
+ROC was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 14.
+
+
+MODEL SUMMARY:
+==============
+
 
 Call:
- randomForest(formula = formula, data = data$train, ntree = 500,      sampsize = sample_sizes, importance = TRUE) 
+ randomForest(x = x, y = y, mtry = param$mtry, importance = TRUE) 
                Type of random forest: classification
                      Number of trees: 500
-No. of variables tried at each split: 8
+No. of variables tried at each split: 14
 
-        OOB estimate of  error rate: 15.01%
+        OOB estimate of  error rate: 42.71%
 Confusion matrix:
-      Pass Fail class.error
-Pass 10807 1475   0.1200944
-Fail   475  238   0.6661992
+     Pass Fail class.error
+Pass  416  297   0.4165498
+Fail  312  401   0.4375877
+
+
+CONFUSION MATRIX:
+=================
+
 Confusion Matrix and Statistics
 
           Reference
 Prediction Pass Fail
-      Pass 2819  128
-      Fail  361   46
-                                         
-               Accuracy : 0.8542         
-                 95% CI : (0.8418, 0.866)
-    No Information Rate : 0.9481         
-    P-Value [Acc > NIR] : 1              
-                                         
-                  Kappa : 0.0924         
-                                         
- Mcnemar's Test P-Value : <2e-16         
-                                         
-            Sensitivity : 0.26437        
-            Specificity : 0.88648        
-         Pos Pred Value : 0.11302        
-         Neg Pred Value : 0.95657        
-             Prevalence : 0.05188        
-         Detection Rate : 0.01371        
-   Detection Prevalence : 0.12135        
-      Balanced Accuracy : 0.57542        
-                                         
-       'Positive' Class : Fail           
-                                         
+      Pass 2020   81
+      Fail 1160   93
+                                          
+               Accuracy : 0.63            
+                 95% CI : (0.6134, 0.6464)
+    No Information Rate : 0.9481          
+    P-Value [Acc > NIR] : 1               
+                                          
+                  Kappa : 0.0432          
+                                          
+ Mcnemar's Test P-Value : <2e-16          
+                                          
+            Sensitivity : 0.53448         
+            Specificity : 0.63522         
+         Pos Pred Value : 0.07422         
+         Neg Pred Value : 0.96145         
+             Prevalence : 0.05188         
+         Detection Rate : 0.02773         
+   Detection Prevalence : 0.37358         
+      Balanced Accuracy : 0.58485         
+                                          
+       'Positive' Class : Fail            
+                                          
 
 
-ROC-AUC and Precision-Recall AUC:
-===================================
-ROC-AUC:  0.668 
-PR-AUC:  0.118 
+ROC-AUC AND PRECISION-RECALL AUC:
+=================================
 
 
-|                                                               |   Pass|   Fail| MeanDecreaseAccuracy| MeanDecreaseGini|
-|:--------------------------------------------------------------|------:|------:|--------------------:|----------------:|
-|Kanton                                                         | 20.587| 19.469|               22.482|           72.375|
-|Resultat der Vorkontrolle                                      | 15.537| 10.974|               16.619|            8.091|
-|Kontrolltyp                                                    |  9.057|  2.112|                9.205|            5.901|
-|Anteil Rinder                                                  |  8.028|  2.038|                8.324|           22.630|
-|Anteil Pferde                                                  |  7.554|  0.079|                7.662|           11.345|
-|Landwirtschaftliche Nutzfläche                                 |  6.060|  3.172|                6.303|           33.174|
-|Anteil BFF-Elemente                                            |  5.794|  4.173|                6.053|           10.307|
-|Anteil anderer Elemente                                        |  5.424|  2.881|                5.685|           30.504|
-|Standardarbeitskraft                                           |  5.393|  2.507|                5.582|           30.157|
-|Anteil weiterer landwirtschaftlicher Flächen                   |  5.343|  1.078|                5.491|           22.821|
-|Anteil Ölsaaten                                                |  5.372|  0.132|                5.479|            5.882|
-|Anteil Dauergrünflächen                                        |  5.245|  2.155|                5.429|           27.295|
-|Anteil Flächen ausserhalb der LN                               |  5.149|  1.973|                5.341|           22.695|
-|Anteil Brotgetreide                                            |  5.141|  3.503|                5.326|           13.841|
-|Anteil Flächen ausserhalb der LN relativ zur LN                |  4.994|  1.621|                5.196|           28.525|
-|Anteil Hühner                                                  |  4.678|  3.131|                5.026|           14.183|
-|Anteil Kunstwiese                                              |  4.825|  2.214|                5.009|           18.656|
-|Rechtsform                                                     |  4.974| -1.506|                4.948|            2.753|
-|Anteil Schafe                                                  |  4.231| -0.372|                4.243|            8.306|
-|Anteil offene Ackerfläche                                      |  3.984|  4.923|                4.216|           16.918|
-|Anteil weiterer Flächen innerhalb der LN                       |  3.588|  0.888|                3.682|           11.016|
-|Anteil Hasen                                                   |  3.622| -0.915|                3.530|            2.491|
-|Grossvieheinheiten                                             |  2.940|  4.934|                3.211|           32.981|
-|Bilanz K₂O bei Hofdüngern                                      |  3.007|  1.983|                3.195|            4.144|
-|Anteil Flächen mit Dauerkulturen                               |  2.906|  0.914|                3.018|            4.485|
-|Anteil von Bäumen bedeckter Fläche                             |  2.878|  1.745|                3.016|           15.659|
-|Bilanz effektiver N bei Recyclingdüngern                       |  3.013| -1.753|                2.979|            2.858|
-|Anteil Zuckerrüben                                             |  2.959| -1.288|                2.948|            3.856|
-|Anteil Kartoffeln                                              |  2.820| -0.113|                2.878|            3.977|
-|Bilanz Gesamt-N bei Recyclingdüngern                           |  2.445|  2.599|                2.617|            3.555|
-|Bilanz K₂O bei Recyclingdüngern                                |  2.397| -1.023|                2.408|            3.211|
-|Bilanz Mg bei Hofdüngern                                       |  2.241|  0.691|                2.323|            4.058|
-|Anteil andere Raufutterverzehrer                               |  2.388| -1.290|                2.191|            1.275|
-|Anteil Futterrüben                                             |  2.060|  0.364|                2.134|            1.152|
-|Anteil Dauerkulturen                                           |  1.640|  1.006|                1.751|            6.573|
-|Anteil Flächen im Sömmerungsgebiet                             |  1.725|  0.008|                1.714|            0.309|
-|Biologisch bewirtschafteter Betrieb                            |  1.036|  9.184|                1.667|            6.539|
-|Erhält Direktzahlungen                                         |  1.528|  1.001|                1.642|            0.080|
-|Anteil Haustiere                                               |  1.580| -0.317|                1.532|            1.966|
-|Betriebsform                                                   |  1.313|  1.095|                1.439|            0.772|
-|Bilanz Mg bei Recyclingdüngern                                 |  1.271|  1.512|                1.348|            3.310|
-|Anteil anderer Tiere                                           |  1.344|  0.000|                1.343|            0.146|
-|Anteil Silomais                                                |  0.842|  4.011|                1.022|           15.281|
-|Erfüllt Mindestnormen des BFS für einen Landwirtschaftsbetrieb |  1.001|  0.000|                1.001|            0.005|
-|Anteil Flächen mit Kulturen in ganzjährig geschütztem Anbau    |  0.692|  1.001|                0.723|            0.155|
-|Anteil übrige offene Ackerfläche                               |  0.652|  0.670|                0.701|            0.613|
-|ÖLN-Anforderungen erfüllt                                      |  0.577|  0.000|                0.579|            0.019|
-|Bilanz P₂O₅ bei Recyclingdüngern                               |  0.538|  0.372|                0.568|            3.514|
-|Anteil andere Geflügel                                         |  0.329|  1.923|                0.562|            2.031|
-|Bilanz Gesamt-N bei Hofdüngern                                 |  0.237|  6.233|                0.544|           18.976|
-|Bilanz P₂O₅ bei Hofdüngern                                     |  0.167|  6.921|                0.497|           19.100|
-|Anteil Körnermais                                              |  0.187|  2.453|                0.308|            4.655|
-|Anzahl Recyclingdüngerlieferungen                              |  0.093|  0.757|                0.130|            2.176|
-|Anteil Grünfläche                                              | -0.638|  7.834|               -0.251|           28.810|
-|Anteil Schutzkulturen                                          | -0.366| -0.034|               -0.368|            1.052|
-|Anteil Saat- und Pflanzgut                                     | -0.427| -1.830|               -0.543|            0.722|
-|Anteil Futtergetreide                                          | -1.005|  5.528|               -0.787|           12.115|
-|Anteil Spezialkulturen                                         | -1.009|  1.460|               -0.947|            5.333|
-|Anteil Körnerleguminosen                                       | -1.458|  7.609|               -0.968|            3.661|
-|Landwirtschaftliche Zone                                       | -1.452|  5.932|               -1.157|           17.480|
-|Anteil Nachwachsende Rohstoffe                                 | -1.267|  0.000|               -1.267|            0.069|
-|Gesamthaft gelieferte Milch                                    | -2.607|  5.360|               -2.390|           18.692|
-|Anzahl Hofdüngerlieferungen                                    | -3.439|  5.058|               -3.227|           12.269|
-|Anteil Ziegen                                                  | -5.427|  2.277|               -5.317|            9.327|
-|Anteil Schweine                                                | -6.545|  6.117|               -6.332|            9.973|
+Call:
+roc.default(response = data$test$result, predictor = predictions_prob[,     "Fail"], quiet = TRUE)
+
+Data: predictions_prob[, "Fail"] in 3180 controls (data$test$result Pass) < 174 cases (data$test$result Fail).
+Area under the curve: 0.6209
+
+  Precision-recall curve
+
+    Area under curve (Integral):
+     0.09262581 
+
+    Area under curve (Davis & Goadrich):
+     0.09225724 
+
+    Curve for scores from  0.138  to  0.928 
+    ( can be plotted with plot(x) )
+
+
+
+GROUPED MODEL PERFORMANCE (BY CANTON AND INSPECTION TYPE):
+==========================================================
+
+
+
+|canton |type             |   N| fails| roc_auc| pr_auc|
+|:------|:----------------|---:|-----:|-------:|------:|
+|AR     |Angemeldet       |  31|     1|   1.000|  0.016|
+|JU     |Angemeldet       |  10|     1|   1.000|  1.000|
+|SH     |Nicht angemeldet |  26|     1|   1.000|  1.000|
+|ZG     |Nicht angemeldet |  25|     1|   0.917|  0.022|
+|AR     |Nicht angemeldet |  20|     2|   0.847|  0.242|
+|SZ     |Nicht angemeldet |  30|     1|   0.828|  0.088|
+|BL     |Nicht angemeldet |  59|     2|   0.754|  0.083|
+|VD     |Angemeldet       |  17|     4|   0.750|  0.375|
+|VS     |Nicht angemeldet |  19|     2|   0.721|  0.070|
+|FR     |Angemeldet       |  25|     2|   0.717|  0.053|
+|SO     |Nicht angemeldet |  44|     2|   0.690|  0.086|
+|LU     |Angemeldet       | 316|    19|   0.684|  0.103|
+|TI     |Nicht angemeldet |  24|     5|   0.679|  0.308|
+|SG     |Angemeldet       | 112|     5|   0.671|  0.066|
+|AI     |Angemeldet       |  18|     2|   0.656|  0.080|
+|SZ     |Angemeldet       |  57|     4|   0.651|  0.089|
+|OW     |Nicht angemeldet |  16|     2|   0.643|  0.156|
+|TG     |Angemeldet       | 167|     5|   0.642|  0.045|
+|ZH     |Nicht angemeldet | 207|     9|   0.629|  0.123|
+|GR     |Nicht angemeldet | 230|     8|   0.617|  0.084|
+|SG     |Nicht angemeldet | 279|     7|   0.587|  0.029|
+|NW     |Nicht angemeldet |  13|     1|   0.583|  0.088|
+|SH     |Angemeldet       |  41|     1|   0.575|  0.021|
+|BE     |Nicht angemeldet | 183|    13|   0.573|  0.098|
+|LU     |Nicht angemeldet | 206|    19|   0.548|  0.224|
+|AG     |Nicht angemeldet | 120|     4|   0.538|  0.029|
+|BE     |Angemeldet       | 181|     9|   0.536|  0.049|
+|SO     |Angemeldet       |  16|     1|   0.533|  0.065|
+|GL     |Nicht angemeldet |  25|     1|   0.500|  0.039|
+|VS     |Angemeldet       |  37|     9|   0.498|  0.263|
+|TG     |Nicht angemeldet | 198|    10|   0.497|  0.058|
+|TI     |Angemeldet       |  18|     3|   0.489|  0.436|
+|FR     |Nicht angemeldet | 109|    11|   0.489|  0.099|
+|ZH     |Angemeldet       | 182|     7|   0.460|  0.071|
+|AG     |Angemeldet       |  19|     0|      NA|     NA|
+|AI     |Nicht angemeldet |  11|     0|      NA|     NA|
+|BL     |Angemeldet       |  22|     0|      NA|     NA|
+|GE     |Angemeldet       |   2|     0|      NA|     NA|
+|GE     |Nicht angemeldet |   2|     0|      NA|     NA|
+|GL     |Angemeldet       |   2|     0|      NA|     NA|
+|GR     |Angemeldet       |  11|     0|      NA|     NA|
+|JU     |Nicht angemeldet |   4|     0|      NA|     NA|
+|NE     |Angemeldet       |  45|     0|      NA|     NA|
+|NE     |Nicht angemeldet |   8|     0|      NA|     NA|
+|NW     |Angemeldet       |  39|     0|      NA|     NA|
+|OW     |Angemeldet       |  11|     0|      NA|     NA|
+|UR     |Angemeldet       |   5|     0|      NA|     NA|
+|UR     |Nicht angemeldet |   4|     0|      NA|     NA|
+|VD     |Nicht angemeldet |  60|     0|      NA|     NA|
+|ZG     |Angemeldet       |  48|     0|      NA|     NA|
+
+
+SORTED IMPORTANCE SCORES:
+=========================
+
+
+
+|                                                            |   Pass|   Fail| MeanDecreaseAccuracy| MeanDecreaseGini|
+|:-----------------------------------------------------------|------:|------:|--------------------:|----------------:|
+|cantonVS                                                    |  9.316| 16.298|               18.622|           10.912|
+|previousFail                                                | 11.011|  7.582|               12.478|           10.071|
+|Anteil Körnerleguminosen                                    |  3.081|  7.143|                7.165|            4.834|
+|Anteil BFF-Elemente                                         |  5.834|  2.926|                6.187|           10.817|
+|Anteil Grünfläche                                           | -1.397|  7.338|                5.089|           30.135|
+|cantonBL                                                    |  2.182|  4.898|                4.707|            1.737|
+|cantonBE                                                    |  1.798|  4.236|                4.406|            3.911|
+|organic1                                                    | -1.092|  6.645|                4.140|            6.482|
+|zoneBergzone 4                                              |  4.824|  0.326|                4.003|            2.676|
+|Anteil andere Geflügel                                      |  3.315|  2.533|                3.984|            2.436|
+|cantonGR                                                    |  2.097|  2.889|                3.742|            2.953|
+|cantonSZ                                                    |  0.190|  4.568|                3.664|            2.731|
+|Anteil Pferde                                               |  1.852|  3.189|                3.614|           13.458|
+|Anzahl Hofdüngerlieferungen                                 | -2.155|  6.136|                3.527|           13.160|
+|Anteil Rinder                                               |  4.336|  0.288|                3.487|           23.220|
+|cantonGL                                                    | -1.528|  4.207|                3.461|            0.517|
+|Bilanz P₂O₅ bei Hofdüngern                                  | -1.095|  5.458|                3.386|           20.267|
+|Landwirtschaftliche Nutzfläche                              |  0.443|  3.510|                3.338|           34.345|
+|Grossvieheinheiten                                          | -1.983|  5.702|                3.299|           35.141|
+|cantonVD                                                    |  0.517|  3.852|                3.005|            1.269|
+|cantonLU                                                    | -1.423|  5.215|                2.698|            3.905|
+|Anteil Silomais                                             |  0.449|  2.817|                2.687|           16.206|
+|Anteil Flächen ausserhalb der LN                            | -1.719|  4.542|                2.547|           23.240|
+|Anteil Flächen ausserhalb der LN relativ zur LN             | -0.883|  3.809|                2.468|           31.482|
+|Anteil offene Ackerfläche                                   |  0.695|  1.775|                2.437|           15.791|
+|cantonSH                                                    |  1.585|  2.300|                2.420|            0.428|
+|cantonAI                                                    |  2.252|  1.107|                2.301|            1.635|
+|cantonNE                                                    |  2.474|  0.835|                2.265|            0.693|
+|Gesamthaft gelieferte Milch                                 | -5.991|  7.897|                2.181|           20.976|
+|Anteil Brotgetreide                                         |  0.536|  2.077|                2.177|           11.538|
+|Anteil Schweine                                             | -0.760|  3.375|                2.032|           10.714|
+|Anteil Futtergetreide                                       | -2.472|  4.267|                1.837|           11.417|
+|Anteil anderer Tiere                                        |  0.000|  1.737|                1.737|            0.111|
+|cantonSO                                                    |  2.752| -0.389|                1.686|            1.087|
+|Anteil Kunstwiese                                           | -0.560|  2.285|                1.657|           18.592|
+|Anteil weiterer Flächen innerhalb der LN                    |  1.501|  0.261|                1.532|           11.624|
+|Anteil anderer Elemente                                     | -1.499|  3.475|                1.458|           31.962|
+|Anteil Flächen im Sömmerungsgebiet                          |  1.001|  1.001|                1.417|            0.170|
+|Anteil Spezialkulturen                                      | -0.433|  2.326|                1.371|            5.520|
+|zoneTalzone                                                 | -4.087|  5.291|                1.367|            3.368|
+|Anteil Ölsaaten                                             |  2.599| -1.228|                1.283|            7.111|
+|Anteil Flächen mit Kulturen in ganzjährig geschütztem Anbau |  1.657| -1.001|                1.228|            0.180|
+|legalFormNatürliche Person                                  |  1.968| -0.340|                1.196|            3.063|
+|Bilanz Mg bei Recyclingdüngern                              | -0.658|  2.099|                1.146|            3.411|
+|Anteil Zuckerrüben                                          |  1.324|  0.103|                1.141|            3.712|
+|Bilanz Gesamt-N bei Hofdüngern                              | -1.863|  3.265|                1.005|           19.751|
+|Standardarbeitskraft                                        |  0.762|  0.429|                0.938|           32.065|
+|Anteil Körnermais                                           |  0.750|  0.551|                0.910|            5.218|
+|Bilanz effektiver N bei Recyclingdüngern                    | -0.729|  2.080|                0.847|            2.776|
+|Bilanz K₂O bei Recyclingdüngern                             | -0.617|  1.663|                0.832|            3.435|
+|cantonSG                                                    | -0.020|  0.998|                0.761|            3.429|
+|Anteil Futterrüben                                          | -0.698|  1.715|                0.751|            0.951|
+|Anteil Kartoffeln                                           |  1.776| -0.746|                0.682|            4.286|
+|Bilanz Mg bei Hofdüngern                                    |  0.439|  0.415|                0.678|            4.892|
+|cantonTI                                                    |  0.599|  0.353|                0.675|            1.819|
+|Anteil Schafe                                               |  0.136|  0.899|                0.669|            9.038|
+|Bilanz K₂O bei Hofdüngern                                   |  1.601| -1.093|                0.614|            4.648|
+|Bilanz P₂O₅ bei Recyclingdüngern                            |  0.180|  0.675|                0.575|            3.378|
+|zoneBergzone 2                                              | -1.239|  1.933|                0.520|            3.459|
+|farmTypeBetriebsgemeinschaft (zählt zu
+Ganzjahresbetrieben)  |  2.179| -1.699|                0.464|            0.750|
+|cantonAR                                                    |  1.289| -1.055|                0.364|            1.248|
+|Anzahl Recyclingdüngerlieferungen                           |  0.966| -0.443|                0.352|            2.335|
+|Anteil von Bäumen bedeckter Fläche                          | -1.272|  1.690|                0.346|           15.297|
+|zoneBergzone 1                                              |  2.316| -1.929|                0.306|            3.137|
+|typeNicht angemeldet                                        |  0.617| -0.192|                0.304|            6.269|
+|Anteil Dauerkulturen                                        | -0.017|  0.474|                0.288|            6.831|
+|Anteil Hühner                                               | -0.113|  0.419|                0.246|           13.444|
+|Anteil weiterer landwirtschaftlicher Flächen                | -0.557|  0.833|                0.206|           23.417|
+|cantonZG                                                    |  0.298|  0.002|                0.178|            0.420|
+|zoneHügelzone                                               | -2.318|  2.516|                0.128|            3.559|
+|farmTypeGemeinschaftsweidebetrieb                           |  0.000|  0.000|                0.000|            0.000|
+|farmTypeSömmerungsbetrieb                                   |  0.000|  0.000|                0.000|            0.000|
+|cantonJU                                                    |  0.000|  0.000|                0.000|            0.131|
+|zoneNicht angestammte Flächen im Ausland                    |  0.000|  0.000|                0.000|            0.000|
+|zoneNicht zugeteilt / Andere                                |  0.000|  0.000|                0.000|            0.000|
+|zoneSömmerungsgebiet                                        |  0.000|  0.000|                0.000|            0.000|
+|DZ1                                                         |  0.000|  0.000|                0.000|            0.000|
+|proofMet1                                                   |  0.000|  0.000|                0.000|            0.000|
+|surveyStdMet1                                               |  0.000|  0.000|                0.000|            0.000|
+|Anteil Nachwachsende Rohstoffe                              |  0.000|  0.000|                0.000|            0.058|
+|cantonFR                                                    | -2.584|  2.123|               -0.028|            2.578|
+|cantonZH                                                    | -1.293|  1.109|               -0.115|            3.051|
+|Anteil Dauergrünflächen                                     | -1.498|  1.410|               -0.202|           26.951|
+|Anteil übrige offene Ackerfläche                            |  0.178| -0.455|               -0.203|            0.718|
+|cantonTG                                                    | -0.732|  0.249|               -0.342|            2.274|
+|Anteil Flächen mit Dauerkulturen                            |  0.131| -0.689|               -0.380|            4.572|
+|Anteil Schutzkulturen                                       |  1.333| -2.079|               -0.464|            0.942|
+|cantonNW                                                    |  0.698| -1.533|               -0.527|            0.596|
+|farmTypeBetrieb (=Ganzjahresbetrieb)                        |  0.029| -0.742|               -0.535|            0.752|
+|cantonUR                                                    |  0.000| -0.838|               -0.830|            0.143|
+|cantonGE                                                    | -1.417|  1.001|               -1.001|            0.123|
+|Anteil Hasen                                                | -0.103| -1.457|               -1.158|            2.476|
+|Anteil Haustiere                                            | -1.003| -0.599|               -1.234|            2.223|
+|Anteil Ziegen                                               | -2.121|  0.099|               -1.436|            9.264|
+|Anteil andere Raufutterverzehrer                            | -0.568| -1.427|               -1.495|            0.918|
+|zoneBergzone 3                                              | -1.429| -1.272|               -2.027|            2.407|
+|Bilanz Gesamt-N bei Recyclingdüngern                        | -1.336| -1.248|               -2.248|            3.261|
+|Anteil Saat- und Pflanzgut                                  | -2.287| -0.456|               -2.320|            0.707|
+|cantonOW                                                    |  0.580| -3.713|               -2.464|            0.587|

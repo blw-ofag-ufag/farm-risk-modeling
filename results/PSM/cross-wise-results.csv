@@ -1,0 +1,41 @@
+"","canton","type","N","fails","roc_auc","pr_auc"
+"1","FR","Angemeldet",189,2,0.959893048128342,0.123829058399997
+"2","TG","Angemeldet",249,8,0.763226141078838,0.0667574846702601
+"3","ZH","Angemeldet",226,4,0.761824324324324,0.059745070273476
+"4","SO","Angemeldet",90,3,0.758620689655172,0.11873008361335
+"5","SG","Angemeldet",250,4,0.747459349593496,0.0287753297514615
+"6","BE","Angemeldet",868,6,0.628673627223511,0.00851520533439389
+"7","AG","Angemeldet",220,1,0.621004566210046,0.0059761431226466
+"8","JU","Angemeldet",42,1,0.536585365853659,0.0254274066365388
+"9","LU","Angemeldet",556,2,0.523916967509025,0.00329432746869629
+"10","AG","Nicht angemeldet",11,0,NA,NA
+"11","AI","Angemeldet",13,0,NA,NA
+"12","AI","Nicht angemeldet",1,0,NA,NA
+"13","AR","Angemeldet",18,0,NA,NA
+"14","BE","Nicht angemeldet",1,0,NA,NA
+"15","BL","Angemeldet",93,0,NA,NA
+"16","BL","Nicht angemeldet",1,0,NA,NA
+"17","FR","Nicht angemeldet",5,0,NA,NA
+"18","GE","Angemeldet",16,0,NA,NA
+"19","GL","Angemeldet",25,0,NA,NA
+"20","GR","Angemeldet",76,0,NA,NA
+"21","GR","Nicht angemeldet",2,0,NA,NA
+"22","JU","Nicht angemeldet",48,0,NA,NA
+"23","LU","Nicht angemeldet",1,0,NA,NA
+"24","NE","Angemeldet",26,0,NA,NA
+"25","NW","Angemeldet",21,0,NA,NA
+"26","NW","Nicht angemeldet",3,0,NA,NA
+"27","OW","Angemeldet",36,0,NA,NA
+"28","SG","Nicht angemeldet",3,0,NA,NA
+"29","SH","Angemeldet",39,0,NA,NA
+"30","SO","Nicht angemeldet",1,0,NA,NA
+"31","SZ","Angemeldet",75,0,NA,NA
+"32","SZ","Nicht angemeldet",20,0,NA,NA
+"33","TG","Nicht angemeldet",1,0,NA,NA
+"34","TI","Angemeldet",7,0,NA,NA
+"35","UR","Angemeldet",43,0,NA,NA
+"36","VD","Angemeldet",192,0,NA,NA
+"37","VS","Angemeldet",71,0,NA,NA
+"38","VS","Nicht angemeldet",1,0,NA,NA
+"39","ZG","Angemeldet",56,0,NA,NA
+"40","ZH","Nicht angemeldet",2,0,NA,NA
