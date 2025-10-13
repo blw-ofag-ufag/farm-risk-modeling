@@ -205,19 +205,18 @@ saveRDS(roc_obj, file.path("results", theme, "roc_object.rds"))
 
 #' Calculate Precision-Recall curve and AUC
 pr_obj <- PRROC::pr.curve(
-  scores.class0 = predictions_prob[, "Fail"], 
+  scores.class0 = predictions_prob[, "Fail"],
   weights.class0 = as.numeric(data$test$result == "Fail"),
   curve = TRUE
 )
-pr_auc_value <- pr_obj$auc.integral
 
 #' Save PR object
 saveRDS(pr_obj, file.path("results", theme, "pr_object.rds"))
 
 #' Print AUC values to the summary file
 print_title("ROC-AUC and Precision-Recall AUC")
-cat("ROC-AUC: ", round(auc_value, 3), "\n")
-cat("PR-AUC: ", round(pr_auc_value, 3), "\n")
+print(roc_obj)
+print(pr_obj)
 
 #' =============================================================================
 #' EVALUATION OF PREDICTIONS CONSIDERING NON-AVAILABLE PREDICTORS
@@ -358,6 +357,106 @@ ggsave(
   units = "in",
   dpi = 300
 )
+
+#' =============================================================================
+#' PLOT METRICS VS. THRESHOLD
+#' -----------------------------------------------------------------------------
+#' Create a plot to visualize how key performance metrics change as the
+#' probability threshold for classification is adjusted. This helps in
+#' understanding the trade-offs and selecting an optimal threshold.
+#' =============================================================================
+
+#' Define a sequence of thresholds to evaluate from 0 to 1
+thresholds <- seq(0, 1, by = 0.01)
+
+#' Calculate metrics for each threshold
+#' We iterate over each threshold, calculate the confusion matrix, and return
+#' a tidy data frame with the results, using German expressions for the metrics.
+metrics_by_threshold <- purrr::map_dfr(thresholds, ~{
+
+  # Predict classes based on the current threshold (.x)
+  predicted <- ifelse(predictions_prob[, "Fail"] >= .x, "Fail", "Pass") %>%
+    factor(levels = levels(data$test$result))
+
+  # Generate the confusion matrix for the current threshold
+  cm <- caret::confusionMatrix(predicted, data$test$result, positive = "Fail")
+
+  # Return a tibble with the threshold and the desired metrics
+  tibble::tibble(
+    Schwellenwert = .x,
+    Sensitivität = cm$byClass["Sensitivity"],
+    Spezifität = cm$byClass["Specificity"],
+    Präzision = cm$byClass["Precision"],
+    `F1-Wert` = cm$byClass["F1"],
+    `Ausgewogene Genauigkeit` = cm$byClass["Balanced Accuracy"],
+    Genauigkeit = cm$overall["Accuracy"]
+  )
+})
+
+#' At a threshold of 1, no "Fail" is predicted, leading to TP=0 and FP=0.
+#' This makes Precision (TP/(TP+FP)) undefined (NaN). We'll replace NaN with 0.
+metrics_by_threshold <- metrics_by_threshold %>%
+  mutate(
+    Präzision = ifelse(is.nan(Präzision), 0, Präzision),
+    `F1-Wert` = ifelse(is.nan(`F1-Wert`), 0, `F1-Wert`)
+  )
+
+#' Pivot the data into a long format for easy plotting with ggplot2
+metrics_long <- metrics_by_threshold %>%
+  tidyr::pivot_longer(
+    cols = -Schwellenwert,
+    names_to = "Metrik",
+    values_to = "Wert"
+  )
+
+#' Find the threshold that maximizes Balanced Accuracy to highlight on the plot
+best_threshold_obj <- metrics_by_threshold %>%
+  slice(which.max(`Ausgewogene Genauigkeit`))
+
+#' Create the plot
+plot_thresholds <- ggplot(
+    metrics_long,
+    aes(x = Schwellenwert, y = Wert, color = Metrik)
+  ) +
+  geom_line(linewidth = 1.1) +
+  scale_color_manual(values = c(
+    "Sensitivität" = "#E76F51",
+    "Spezifität" = "#264653",
+    "Präzision" = "#F4A261",
+    "F1-Wert" = "#E9C46A",
+    "Ausgewogene Genauigkeit" = "#2A9D8F",
+    "Genauigkeit" = "#8ab17d"
+  )) +
+  scale_x_continuous(
+    breaks = seq(0, 1, 0.2), name = "Schwellenwert"
+  ) +
+  scale_y_continuous(labels = scales::percent, name = "Metrik-Wert") +
+  labs(
+    title = paste("Performance-Metriken vs. Schwellenwert für", theme),
+    subtitle = "Vergleich von Metriken über gesamten Schwellenwertbereich.",
+    color = "Metrik:"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(face = "bold", size = rel(1.3)),
+    plot.subtitle = element_text(margin = ggplot2::margin(b = 15)),
+    legend.position = "bottom",
+    panel.grid = element_line(linetype = "dotted"),
+    axis.title = element_text(face = "bold"),
+    plot.margin = ggplot2::margin(20, 20, 20, 20)
+  )
+
+#' Save the metrics-vs-threshold plot
+ggsave(
+  file.path("results", theme, "metrics_vs_threshold.png"),
+  plot = plot_thresholds,
+  width = 11,
+  height = 8,
+  units = "in",
+  dpi = 300
+)
+
 
 #' =============================================================================
 #' PLOT THE IMPORANCE SCORES
@@ -521,7 +620,7 @@ plot_pr <- ggplot(pr_df, aes(x = Recall, y = Precision)) +
     title = paste("Precision-Recall-Kurve für den Themenbereich", theme),
     subtitle = paste0(
       "Modellperformance auf dem Test-Datensatz. AUC = ",
-      round(pr_auc_value, 3)
+      round(pr_obj$auc.integral, 3)
     ),
     x = "Recall (Sensitivität)",
     y = "Precision (Positiver Vorhersagewert)"
