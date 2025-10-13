@@ -8,6 +8,6 @@ Rscript scripts/data-preparation.R
 Rscript scripts/data-analysis.R
 
 # Random forest modeling
-for theme in BFF BTS GMF Lebensmittelsicherheit Nährstoff PSM RAUS Tierschutz Weide Andere; do
+for theme in BFF BTS GMF Nährstoff PSM RAUS Tierschutz Weide Andere Lebensmittelsicherheit; do
   Rscript scripts/random-forests.R ${theme}
 done

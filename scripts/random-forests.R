@@ -154,7 +154,8 @@ model_tuned <- caret::train(
 print_title("Results of the tuning process")
 print(model_tuned)
 
-#' The best model found during cross-validation is stored in the `finalModel` element
+#' The best model found during cross-validation is stored in the `finalModel`
+#' element
 model <- model_tuned$finalModel
 
 #' =============================================================================
@@ -259,13 +260,15 @@ performance_by_group <- evaluation_df %>%
   ) %>%
   dplyr::arrange(desc(roc_auc)) # Sort by performance
 
-# 3. Print the results to the console and the log file
+# print the results to the console and the log file
 print_title("Grouped Model Performance (by Canton and Inspection Type)")
 print(knitr::kable(performance_by_group, digits = 3, format = "markdown"))
 
 # Also save results as a CSV
-write.csv(performance_by_group, file.path("results", theme, "cross-wise-results.csv"))
-
+utils::write.csv(
+  x = performance_by_group,
+  file = file.path("results", theme, "cross-wise-results.csv")
+)
 
 #' =============================================================================
 #' POST-HOC MODEL ANALYSIS
@@ -462,9 +465,10 @@ ggsave(
 #' the positive and negative classes.
 #' =============================================================================
 
-plot_roc <- ggroc(roc_obj, colour = "#3366CC", size = 1.2) +
-  geom_segment(
-    aes(x = 1, xend = 0, y = 0, yend = 1),
+plot_roc <- ggroc(roc_obj, colour = "#3366CC", linewidth = 1.2) +
+  annotate(
+    "segment",
+    x = 1, xend = 0, y = 0, yend = 1,
     color = "grey",
     linetype = "dashed"
   ) +
@@ -512,7 +516,7 @@ pr_df <- data.frame(
 )
 
 plot_pr <- ggplot(pr_df, aes(x = Recall, y = Precision)) +
-  geom_line(color = "#3366CC", size = 1.2) +
+  geom_line(color = "#3366CC", linewidth = 1.2) +
   labs(
     title = paste("Precision-Recall-Kurve für den Themenbereich", theme),
     subtitle = paste0(
