@@ -73,6 +73,16 @@ data_split <- function(data, theme, predictors, training_size = 0.8) {
 
 
 #' =============================================================================
+#' GET OBJECT FROM FRICTIONLESS METADATA LIST BY KEY
+#' =============================================================================
+
+get_object <- function(meta, key) {
+  meta$fields[[
+    which(lapply(meta$fields, function(x) getElement(x, "name"))==key)
+  ]]
+}
+
+#' =============================================================================
 #' GET VARIABLE TITLES FROM FRICTIONLESS METADATA (VECTORIZED)
 #' -----------------------------------------------------------------------------
 #'
@@ -162,4 +172,12 @@ label_dataset <- function(data, metadata, lang = "de", unit = TRUE) {
 
   #' Return labelled/translated data set
   data
+}
+
+#' =============================================================================
+#' PRINT A TITLE
+#' -----------------------------------------------------------------------------
+
+print_title <- function(x) {
+  cat("\n\n", toupper(x), ":\n", strrep("=", 1+nchar(x)), "\n\n", sep = "")
 }

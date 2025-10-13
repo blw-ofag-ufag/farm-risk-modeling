@@ -1,0 +1,47 @@
+"","canton","type","N","fails","roc_auc","pr_auc"
+"1","AI","Nicht angemeldet",2,1,1,0.306852819440055
+"2","JU","Angemeldet",19,1,1,1
+"3","NW","Nicht angemeldet",11,1,1,1
+"4","TI","Nicht angemeldet",2,1,1,1
+"5","SG","Angemeldet",359,1,0.826815642458101,0.00793751440355905
+"6","GL","Angemeldet",41,2,0.730769230769231,0.533256493006247
+"7","AG","Angemeldet",216,1,0.725581395348837,0.00318477814482017
+"8","NE","Angemeldet",62,2,0.725,0.0539961639954396
+"9","ZH","Angemeldet",244,5,0.721338912133891,0.0975995415822378
+"10","VD","Angemeldet",346,2,0.713662790697674,0.00378175959366989
+"11","OW","Angemeldet",62,2,0.704166666666667,0.0219109604885506
+"12","SZ","Nicht angemeldet",31,1,0.7,0.0230796716672459
+"13","AR","Angemeldet",59,4,0.688636363636364,0.113881257698297
+"14","VS","Nicht angemeldet",7,1,0.666666666666667,0.189069783783671
+"15","SO","Angemeldet",92,1,0.659340659340659,0.0157903522480116
+"16","GR","Angemeldet",143,1,0.633802816901408,0.00949386152388954
+"17","BL","Angemeldet",96,1,0.610526315789474,0.00852286516056466
+"18","LU","Angemeldet",607,13,0.595959595959596,0.139704199803988
+"19","VS","Angemeldet",222,22,0.595454545454545,0.138455598889548
+"20","TG","Angemeldet",266,25,0.588298755186722,0.127297322597044
+"21","FR","Nicht angemeldet",103,4,0.551767676767677,0.0401788933476437
+"22","SZ","Angemeldet",130,3,0.545931758530184,0.0232775736522801
+"23","TI","Angemeldet",26,1,0.52,0.0394875079175634
+"24","BE","Angemeldet",928,15,0.508287696239503,0.0176414326324651
+"25","FR","Angemeldet",79,7,0.455357142857143,0.0747007683648986
+"26","AI","Angemeldet",22,3,0.43859649122807,0.147098768181606
+"27","AG","Nicht angemeldet",14,0,NA,NA
+"28","AR","Nicht angemeldet",11,0,NA,NA
+"29","BE","Nicht angemeldet",1,0,NA,NA
+"30","BL","Nicht angemeldet",1,0,NA,NA
+"31","GE","Angemeldet",27,0,NA,NA
+"32","GL","Nicht angemeldet",1,0,NA,NA
+"33","GR","Nicht angemeldet",7,0,NA,NA
+"34","LU","Nicht angemeldet",1,0,NA,NA
+"35","NW","Angemeldet",46,0,NA,NA
+"36","SG","Nicht angemeldet",19,0,NA,NA
+"37","SH","Angemeldet",39,0,NA,NA
+"38","SH","Nicht angemeldet",1,0,NA,NA
+"39","SO","Nicht angemeldet",1,0,NA,NA
+"40","TG","Nicht angemeldet",1,0,NA,NA
+"41","UR","Angemeldet",69,0,NA,NA
+"42","UR","Nicht angemeldet",1,0,NA,NA
+"43","VD","Nicht angemeldet",2,0,NA,NA
+"44","ZG","Angemeldet",59,0,NA,NA
+"45","ZG","Nicht angemeldet",1,0,NA,NA
+"46","ZH","Nicht angemeldet",2,0,NA,NA
